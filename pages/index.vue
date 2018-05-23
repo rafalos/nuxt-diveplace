@@ -9,12 +9,31 @@
       </div>
       <div class="col-lg-9">
        <h3> Explore our {{ diveplaces.length }} diveplaces NOW! </h3>
-       <div class="row">
-         <div class="col-lg-3 car">1</div>
-         <div class="col-lg-3 car">2</div>
-         <div class="col-lg-3 car">3</div>
-         <div class="col-lg-3 car">4</div>
-       </div>
+      <div>
+    <b-carousel id="carousel1"
+      style="text-shadow: 1px 1px 2px #333;"
+      controls
+      indicators
+      background="#ababab"
+      :interval="7000"
+      img-width="300"
+      img-height="150"
+      v-model="slide"
+      @sliding-start="onSlideStart"
+      @sliding-end="onSlideEnd"
+      >
+
+      <b-carousel-slide
+      class="slideImg"
+      v-for="diveplace in getRandomDiveplaces"
+      :key="diveplace._id" 
+      :caption="diveplace.name"
+      text="Test description"
+      :img-src="'http://res.cloudinary.com/hoahkzu0h/' + diveplace.image[0]">
+    </b-carousel-slide>
+    </b-carousel>
+
+  </div>
       </div>  
     </div>
   </div>
@@ -25,6 +44,12 @@
 import axios from 'axios'
 
   export default {
+    data () {
+    return {
+      slide: 0,
+      sliding: null
+    }
+  },
     asyncData() {
       return axios.get('http://localhost:3000/api/diveplaces')
       .then((response) => {
@@ -40,14 +65,27 @@ import axios from 'axios'
     computed: {
       getRandomDiveplace() {
         return this.diveplaces[Math.floor(Math.random() * this.diveplaces.length)]
+      },
+      getRandomDiveplaces() {
+        return this.diveplaces.slice(0,5)
+      }
+    },
+    methods: {
+
+      onSlideStart(slide) {
+        this.sliding = true
+      },
+      onSlideEnd(slide) {
+        this.sliding = false
       }
     }
   }
 </script>
 
 <style scoped>
-.car {
-  border: 1px solid black;
-  margin: 5px;
+.slideImg {
+  width: 100%;
+  height: 250px;
 }
+
 </style>
