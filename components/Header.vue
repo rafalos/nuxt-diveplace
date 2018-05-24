@@ -43,10 +43,6 @@
   margin-bottom: 20px;
 }
 
-button {
-  border: none;
-}
-
 img {
     height: auto; 
     width: auto; 

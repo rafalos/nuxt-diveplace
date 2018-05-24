@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-lg-3 diveplace-box" v-for="diveplace in diveplaces" :key="diveplace._id">
+    <div class="row whiteContainer">
+      <div class="col-lg-3" v-for="diveplace in diveplaces" :key="diveplace._id">
         <nuxt-link :to="'/diveplaces/' + diveplace._id"><h3>{{ diveplace.name }}</h3></nuxt-link>
       </div>
     </div>

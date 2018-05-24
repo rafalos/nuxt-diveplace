@@ -83,7 +83,7 @@ html
   letter-spacing: 1px;
   width:150px;
   font-size: 13px;
-  background: #466FA2;
+  background: #143D61;
   padding: 10px;
   text-decoration: none;
   transition: 0.1s;
@@ -91,7 +91,12 @@ html
   display: inline-block;
   margin-bottom: 5px;
   line-height: 15px;
+  border: none;
+  border-bottom: 4px solid white;
 }
+
+.stdbutton:focus {outline:0;}
+
 .stdbutton:hover {
  text-decoration: none;
  background: #F8F8F8;
@@ -109,7 +114,7 @@ html
 }
 
 .whiteContainer {
-  padding: 13px;
+  padding: 0px 13px 0px 13px;
   width: 100%;
   font-size: 1.1em;
   font-family: "Roboto";
