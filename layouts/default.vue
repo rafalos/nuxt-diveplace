@@ -15,6 +15,15 @@ import Header from "@/components/Header"
 </script>
 
 <style>
+a:hover {
+  text-decoration: none;
+}
+
+a {
+  color: black;
+}
+
+
 html
 {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -102,6 +111,7 @@ html
  background: #F8F8F8;
  font-weight: bold;
  color: #143D61;
+ cursor: pointer;
 }
 .stdbutton:active {
  text-decoration: none;
@@ -119,6 +129,18 @@ html
   font-size: 1.1em;
   font-family: "Roboto";
   background-color: #F6F7F7;
+  margin: 20px 0 20px 0;
+  font-weight: bold;
+  -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+  -moz-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+  box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+}
+
+.diveplacesContainer {
+  padding: 0px 13px 0px 13px;
+  width: 100%;
+  font-size: 1.1em;
+  font-family: "Roboto";
   margin: 20px 0 20px 0;
   font-weight: bold;
   -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);

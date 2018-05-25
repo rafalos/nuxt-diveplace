@@ -17,11 +17,23 @@ app.get("/api/diveplaces", (req,res) => {
     if(err) {
       console.log(err)
     } else {
-       res.json({
+      res.json({
          foundDiveplace
        });
     }
   })
+})
+
+app.get("/api/diveplaces/:id", (req,res) => {
+  Diveplace.findById(req.params.id, (err, foundDiveplace) => {
+    if(err) {
+      console.log(err)
+    } else {
+      res.json({
+        foundDiveplace
+      })
+    }
+  });
 })
 
 // Import and Set Nuxt.js options
