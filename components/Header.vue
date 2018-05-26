@@ -20,15 +20,6 @@
     </b-navbar-nav>
   </b-collapse>
 </b-navbar>
-<div class="container">
-  <a href="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="margin-top: 15px; margin-bottom: 20px;"></a>
-</div>
-<div class="container" id="button-container">
-  <nuxt-link to="/"><button class="stdbutton">Home</button></nuxt-link>
-  <nuxt-link to="/diveplaces"><button class="stdbutton">Diveplaces</button></nuxt-link>
-  <nuxt-link to="/"><button class="stdbutton">Worldmap</button></nuxt-link>
-</div>
-
   </div>
 </template>
 
@@ -39,9 +30,6 @@
 </script>
 
 <style scoped>
-#button-container {
-  margin-bottom: 20px;
-}
 
 #logo {
     height: auto; 

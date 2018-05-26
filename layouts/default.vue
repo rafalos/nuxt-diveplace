@@ -1,6 +1,15 @@
 <template>
   <div id="main">
     <Header/>
+    <div class="container">
+      <a href="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="margin-top: 15px; margin-bottom: 20px;"></a>
+    </div>
+    <div class="container" id="button-container">
+      <nuxt-link to="/"><button class="stdbutton"><i class="fas fa-home"></i> Home</button></nuxt-link>
+      <nuxt-link to="/diveplaces"><button class="stdbutton"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
+      <nuxt-link to="/worldmap"><button class="stdbutton"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
+      <nuxt-link to="/diveplaces/new"><button class="stdbutton"><i class="fas fa-plus"></i> New diveplace</button></nuxt-link>
+    </div>
     <nuxt/>
   </div>
 </template>
@@ -95,7 +104,7 @@ html
   background: #143D61;
   padding: 10px;
   text-decoration: none;
-  transition: 0.1s;
+  transition: 0.2s;
   margin-right: 5px;
   display: inline-block;
   margin-bottom: 5px;
@@ -112,6 +121,7 @@ html
  font-weight: bold;
  color: #143D61;
  cursor: pointer;
+ border-bottom: 4px solid #143D61;
 }
 .stdbutton:active {
  text-decoration: none;
@@ -146,5 +156,9 @@ html
   -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
   -moz-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
   box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+}
+
+#button-container {
+  margin-bottom: 20px;
 }
 </style>

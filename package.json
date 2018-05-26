@@ -19,7 +19,8 @@
     "bootstrap-vue": "^1.0.2",
     "express": "^4.15.3",
     "mongoose": "^5.1.2",
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.0.0",
+    "vue2-google-maps": "^0.9.7"
   },
   "devDependencies": {
     "cross-env": "^5.0.1",

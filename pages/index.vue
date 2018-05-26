@@ -19,7 +19,7 @@
       controls
       indicators
       background="#ababab"
-      :interval="7000"
+      :interval="4000"
       img-width="300"
       img-height="150"
       v-model="slide"
@@ -27,14 +27,14 @@
       @sliding-end="onSlideEnd"
       >
 
-      <b-carousel-slide
-      class="slideImg"
-      v-for="diveplace in getRandomDiveplaces"
-      :key="diveplace._id" 
-      :caption="diveplace.name"
-      :text="diveplace.country"
-      :img-src="'http://res.cloudinary.com/hoahkzu0h/' + diveplace.image[0]">
-    </b-carousel-slide>
+      <nuxt-link :to="'/diveplaces/' + diveplace._id" v-for="diveplace in getRandomDiveplaces" :key="diveplace._id" >
+        <b-carousel-slide
+        class="slideImg"
+        :caption="diveplace.name"
+        :text="diveplace.country"
+        :img-src="'http://res.cloudinary.com/hoahkzu0h/' + diveplace.image[0]">
+        </b-carousel-slide>
+      </nuxt-link>
     </b-carousel>
 
   </div>
