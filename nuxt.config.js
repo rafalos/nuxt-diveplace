@@ -35,7 +35,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {src: '@/plugins/vue2-google-maps.js'}
+    {src: '@/plugins/vue2-google-maps.js'},
+    {src: '@/plugins/vue-gallery.js', ssr: false }
   ],
 
   /*

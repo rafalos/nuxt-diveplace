@@ -8,7 +8,7 @@
       <nuxt-link to="/"><button class="stdbutton"><i class="fas fa-home"></i> Home</button></nuxt-link>
       <nuxt-link to="/diveplaces"><button class="stdbutton"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
       <nuxt-link to="/worldmap"><button class="stdbutton"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
-      <nuxt-link to="/diveplaces/new"><button class="stdbutton"><i class="fas fa-plus"></i> New diveplace</button></nuxt-link>
+      <nuxt-link v-if="this.$store.state.auth" to="/diveplaces/new"><button class="stdbutton"><i class="fas fa-plus"></i> New diveplace</button></nuxt-link>
     </div>
     <nuxt/>
   </div>
@@ -136,7 +136,6 @@ html
 .whiteContainer {
   padding: 0px 13px 0px 13px;
   width: 100%;
-  font-size: 1.1em;
   font-family: "Roboto";
   background-color: #F6F7F7;
   margin: 20px 0 20px 0;

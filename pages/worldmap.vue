@@ -3,6 +3,7 @@
     <GmapMap
     :center="center"
     :zoom="6"
+    ref="mapRef"
     map-type-id="terrain"
     style="width: 100%; height: 500px"
     >
@@ -81,6 +82,9 @@ export default {
       this.currentMidx = idx;
       }
     }
+   },
+   mounted() {
+    this.$refs.mapRef.$forceUpdate()
    }
 }
 </script>

@@ -4,21 +4,35 @@
       <div class="col-md-12">
    	    <div class="whiteContainer">
            <h4>{{diveplace.name}}</h4>
-          <div>Było tam: osób</div>
-          <div>Zaloguj się dodać do odwiedzonych</div>
         </div>
    	  </div>
     </div>
   <div class="row">
     <div class="col-md-6">
-      <div id="map">MAPA</div>
+      <div class="whiteContainer" style="padding: 0">
+        <GmapMap
+        :center="{lat: diveplace.lat, lng: diveplace.lng}"
+        :zoom="11"
+        map-type-id="terrain"
+        style="width: 100%; height: 350px">
+        <GmapMarker
+        :position="{lat: diveplace.lat, lng: diveplace.lng}"
+        :title="diveplace.name"
+        :clickable="true"
+        :draggable="false"/>
+        </GmapMap>
+      </div>
     </div>
     
     <div class="col-md-6">
       <div class="whiteContainer">
         <h3 class="text-center">Galeria</h3>
-        <div id="img-container">    
-          <h4>Nie dodano jescze żadnych zdjęć do tego miejsca</h4>
+
+
+
+        <div id="img-container">
+          <gallery></gallery>    
+       
         </div>
       </div>
     </div>
@@ -48,7 +62,7 @@
         </div>
           <div class="row">
             <div class="col=lg-12">
-              <p class="description-text">Descr</p>
+              <p>{{diveplace.description}}</p>
             </div>
           </div>
       </div>
@@ -86,7 +100,9 @@
 
 <script>
   import axios from 'axios'
+
   export default {
+
     asyncData(context) {
       return axios.get('http://localhost:3000/api/diveplaces/' + context.route.params.id )
       .then((response) => {
