@@ -75,7 +75,7 @@
           <form action="/diveplaces/<%=diveplace._id%>/comments" method="POST" style="margin-top:70px;">
             <div id="input-container">
              <div class="form-group">
-               <textarea class="descriptionField" cols="40" rows ="1" name="comment[text]" placeholder="Treść komentarza"></textarea></div>
+               <textarea class="descriptionField" cols="40" rows ="1" name="comment[text]" placeholder="Napisz swoją opinię"></textarea></div>
             </div>
              <div class="form-group">
                <button class="stdbutton">Dodaj</button>

@@ -2,7 +2,7 @@
   <div id="main">
     <Header/>
     <div class="container">
-      <a href="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="margin-top: 15px; margin-bottom: 20px;"></a>
+      <nuxt-link to="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="margin-top: 15px; margin-bottom: 20px;"></nuxt-link>
     </div>
     <div class="container" id="button-container">
       <nuxt-link to="/"><button class="stdbutton"><i class="fas fa-home"></i> Home</button></nuxt-link>
