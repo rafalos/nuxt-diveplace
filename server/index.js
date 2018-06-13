@@ -106,6 +106,29 @@ app.get("/api/diveplaces/:id", (req,res) => {
   });
 })
 
+
+app.get("/api/users/:username", function(req,res){
+    var data = req.params.username;
+    User.findOne({username: data}, function(err, foundUser){
+        if(err){
+            console.log(err);
+        }else{
+            res.json({
+                foundUser
+            })
+        }
+    })
+})
+
+
+
+
+
+
+
+
+
+
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
 config.dev = !(process.env.NODE_ENV === 'production')

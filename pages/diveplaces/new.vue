@@ -1,7 +1,13 @@
 <template>
   <div class="container">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" :style="{width: progress +'%'}" style="background: #143D61;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <span class="text-center font-weight-bold" style="color-white">{{progress}}</span>
+      </div>
+    </div>
+     
     <div v-show="step==1" class="whiteContainer">
-      <h3 class="text-center">Mark your diveplace on the map</h3>
+      <h3 class="text-center">1. Mark your diveplace on the map</h3>
       <GmapMap
       @click="placeMarker($event)"
       :center="{lat: 52.96187505907603, lng: 20.7861328125}"
@@ -14,75 +20,76 @@
         :draggable="false"
         :position="marker"/>
       </GmapMap>
-      <button @click="step=2" class="stdbutton">Next</button>
-      {{marker.lat}} | {{marker.lng}} | {{country}}
+      <button @click="stepUp" class="stdbutton">Next</button>
+      {{marker.lat}} | {{marker.lng}} | {{diveplace.country}}
     </div>
 
     <div v-show="step==2" class="whiteContainer">
       <h3 class="text-center">2. Complete diveplace details</h3>
       <div class="form-group">
         <label for="diveplaceName">Diveplace name</label>
-        <input type="text" class="form-control" id="diveplaceName">
+        <input type="text" class="form-control" id="diveplaceName" v-model="diveplace.name">
       </div>
       <div class="form-row">
         <div class="col">
-          <input type="text" class="form-control" placeholder="Height">
+          <input type="text" class="form-control" placeholder="Height" v-model="diveplace.height">
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Depth">
+          <input type="text" class="form-control" placeholder="Depth" v-model="diveplace.depth">
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Surface">
+          <input type="text" class="form-control" placeholder="Surface" v-model="diveplace.surface">
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Sight">
+          <input type="text" class="form-control" placeholder="Sight" v-model="diveplace.sight">
         </div>
       </div>
       <div class="form-group">
-        <label for="exampleFormControlTextarea1">Description</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <label for="diveplaceDescription">Description</label>
+        <textarea class="form-control" id="diveplaceDescription" v-model="diveplace.description" rows="3"></textarea>
       </div>
-      <button @click="step--" class="stdbutton">Prev</button>
-      <button @click="step++" class="stdbutton">Next</button>
+      <button @click="stepDown" class="stdbutton">Prev</button>
+      <button @click="stepUp" class="stdbutton">Next</button>
     </div>
 
 
     <div v-show="step==3" class="whiteContainer">
       <h3 class="text-center">3. Mark special attractions you can expect on your diveplace</h3>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="First">
-        <label class="form-check-label" for="First">
-          First
+        <input class="form-check-input" v-model="diveplace.coral" type="checkbox" value="" id="coral">
+        <label class="form-check-label" for="coral">
+          Coral
         </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="Second">
-        <label class="form-check-label" for="Second">
-          Second
+        <input class="form-check-input" v-model="diveplace.base" type="checkbox" value="" id="base">
+        <label class="form-check-label" for="base">
+          Diving base
         </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="Third">
-        <label class="form-check-label" for="Third">
-          Third
+        <input class="form-check-input" v-model="diveplace.wreck" type="checkbox" value="" id="wreck">
+        <label class="form-check-label" for="wreck">
+          Underwater wreck
         </label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="Fourth">
-        <label class="form-check-label" for="Fourth">
-          Fourth
+        <input class="form-check-input" v-model="diveplace.road" type="checkbox" value="" id="road">
+        <label class="form-check-label" for="road">
+          Underwater road
         </label>
       </div>
       
-      <button @click="step--" class="stdbutton">Prev</button>
-      <button @click="step++" class="stdbutton">Next</button>
+      <button @click="stepDown" class="stdbutton">Prev</button>
+      <button @click="stepUp" class="stdbutton">Next</button>
     </div>
 
 
     <div v-show="step==4" class="whiteContainer">
       <h3 class="text-center">4. Upload images of your diveplace</h3>
       <dropzone id="foo" ref="el" :options="options" :destroyDropzone="true"></dropzone>
-      <button @click="step--" class="stdbutton">Prev</button>
+      <button @click="stepDown" class="stdbutton">Prev</button>
+      <button @click="createDiveplace" class="stdbutton">Create</button>
     </div>
   </div>
 </template>
@@ -96,11 +103,24 @@
     data() {
       return {
         step: 1,
+        progress: 25,
         marker: {
           lat:0,
           lng:0,
         },
-        country:"",
+        diveplace: {
+          country: '',
+          name: '',
+          height: '',
+          depth: '',
+          surface: '',
+          sight: '',
+          description: '',
+          coral: false,
+          base: false,
+          wreck: false,
+          road: false
+        },
         options:{
           url: "http://httpbin.org/anything"
         }
@@ -115,8 +135,19 @@
         .then((response) => {
           this.marker.lat = e.latLng.lat()
           this.marker.lng = e.latLng.lng()
-          this.country = response.data.countryName
+          this.diveplace.country = response.data.countryName
         })
+      },
+      stepUp() {
+        this.step++
+        this.progress+=25
+      },
+      stepDown() {
+        this.step--
+        this.progress-=25
+      },
+      createDiveplace() {
+        console.log("clicked")
       }
     },
     components: {
@@ -124,3 +155,21 @@
     }
   }
 </script>
+
+<style scoped>
+.input-line {
+  background: none;
+  margin-bottom: 10px;
+  line-height: 2.4em;
+  color: #143D61;
+  font-family: roboto;
+  font-weight: bold;
+  letter-spacing: 0px;
+  letter-spacing: 0.02rem;
+  font-size: 19px;
+  font-size: 1.8rem;
+  border-bottom: 2px solid rgba(70, 111, 162, 0.65);
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+}
+</style>
