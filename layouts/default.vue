@@ -1,10 +1,7 @@
 <template>
   <div id="main">
     <Header/>
-    <div class="container">
-      <nuxt-link to="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="margin-top: 15px; margin-bottom: 20px;"></nuxt-link>
-    </div>
-    <div class="container" id="button-container">
+    <div class="container" id="button-container" style="margin-top: 50px;">
       <nuxt-link to="/"><button class="stdbutton"><i class="fas fa-home"></i> Home</button></nuxt-link>
       <nuxt-link to="/diveplaces"><button class="stdbutton"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
       <nuxt-link to="/worldmap"><button class="stdbutton"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
@@ -137,7 +134,7 @@ html
   padding: 0px 13px 0px 13px;
   width: 100%;
   font-family: "Roboto";
-  background-color: #F6F7F7;
+  background:rgba(255,255,255, 0.8);
   margin: 20px 0 20px 0;
   font-weight: bold;
   -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);

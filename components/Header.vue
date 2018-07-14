@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="light" variant="light">
+    <b-navbar toggleable="md" style="border-bottom: 3px solid #143D61; background:rgba(255,255,255, 0.4);">
+      <nuxt-link to="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="height: 60%; width: 60%;"></nuxt-link>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse">
     <b-navbar-nav class="ml-auto">
@@ -48,5 +49,10 @@
     max-width: 350px; 
     max-height: 350px;
 }
+
+.dd {
+  color: red !important
+}
+
 
 </style>

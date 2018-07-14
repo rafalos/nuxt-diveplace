@@ -31,7 +31,7 @@
 
 .diveplace-column {
 	color: black;
-  background: #F8F8F8;
+  background:rgba(255,255,255, 0.8);
   margin: 0px 0px 10px 0px;
   -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
   -moz-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);

@@ -3,13 +3,17 @@
     <h1>Login</h1>
       <input type="text" v-model="credientals.email">
       <input type="password" v-model="credientals.password">
-      <button @click="login">Register</button>
+      <button @click="login">Login</button>
+      <div v-if="notification.visible==1" class="alert alert-success">
+        {{notification.message}}
+      </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Cookie from 'js-cookie'
+import Auth from '@/services/Authentication'
 
   export default {
     data() {
@@ -17,29 +21,31 @@ import Cookie from 'js-cookie'
         credientals: {
           email: "",
           password: ""
-        }
+        },
+         notification: {
+           visible: 0,
+           message: ""
+         }
       }
     },
     methods: {
       login() {
-        console.log("clicked")
-        axios.post('http://localhost:3000/api/login', {
-          email: this.credientals.email,
-          password: this.credientals.password
+        this.notification.visibe = 0; 
+        var vm=this
+        Auth.login(this.credientals.email,this.credientals.password, function(auth){
+          if(auth.status == false) {
+            vm.notification.visible = 1
+            vm.notification.message = auth.message
+          } else {
+            vm.notification.visible = 1
+            vm.notification.message = "Successfully logged in. Wait for redirect"
+            vm.$store.commit('update', auth)
+            Cookie.set('auth', auth)
+            vm.$router.push('/')
+          }
+          
         })
-      .then((response) => {
-          const auth = {
-          accessToken: response.data.token,
-          user: response.data.user
-        }
-        this.$store.commit('update', auth)
-        Cookie.set('auth', auth)
-        this.$router.push('/')
-      })
-      .catch(function(error){
-        console.log(error)
-      })
-    },
+      }
       }
     }
   

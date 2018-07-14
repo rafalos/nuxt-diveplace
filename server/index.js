@@ -37,18 +37,19 @@ app.post("/api/register", function(req, res) {
           if(err) {
               return res.json({
                   success: false,
-                  message: "Email already exist"
+                  message: "Email already exist! Try another one"
               })
           }
           res.json({
               success: true,
-              message: "Successfully created new user"
+              message: "Successfully created new user! Redirecting in 3 seconds"
           })
       })
   }
 })
 
 app.post("/api/login", function(req, res){
+    console.log(req.body)
   User.findOne({
       email: req.body.email
   }, function(err, user) {
@@ -56,7 +57,7 @@ app.post("/api/login", function(req, res){
       if (!user) {
           res.send({
               success: false,
-              message: "Auth failed, user not found"
+              message: "That email was not found! Please register"
           })
       }else {
           user.comparePassword(req.body.password, function(err, isMatch){
