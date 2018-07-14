@@ -31,7 +31,8 @@ app.post("/api/register", function(req, res) {
   } else {
       var newUser = new User({
           email: req.body.email,
-          password: req.body.password
+          password: req.body.password,
+          username: req.body.username
       });
       newUser.save(function(err){
           if(err) {

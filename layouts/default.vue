@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <Header/>
-    <div class="container" id="button-container" style="margin-top: 50px;">
+    <div class="container" id="button-container" style="margin-top: 100px;">
       <nuxt-link to="/"><button class="stdbutton"><i class="fas fa-home"></i> Home</button></nuxt-link>
       <nuxt-link to="/diveplaces"><button class="stdbutton"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
       <nuxt-link to="/worldmap"><button class="stdbutton"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
@@ -134,7 +134,7 @@ html
   padding: 0px 13px 0px 13px;
   width: 100%;
   font-family: "Roboto";
-  background:rgba(255,255,255, 0.8);
+  background:rgba(255,255,255, 0.9);
   margin: 20px 0 20px 0;
   font-weight: bold;
   -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
@@ -156,5 +156,27 @@ html
 
 #button-container {
   margin-bottom: 20px;
+}
+
+.input-line:focus {
+  outline: none;
+  border-color: #2D4F6E;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+}
+
+.input-line {
+  width: 100%;
+  margin: 10px;
+  border: none;
+  background: none;
+  color: #143D61;
+  font-family: roboto;
+  font-weight: bold;
+  letter-spacing: 0.02rem;
+  font-size: 1.2rem;
+  border-bottom: 2px solid rgba(70, 111, 162, 0.65);
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
 }
 </style>

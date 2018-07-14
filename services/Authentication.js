@@ -28,10 +28,11 @@ export default {
     })
   },
 
-  register(email, password, callback) {
+  register(email, password, username, callback) {
     axios.post('http://localhost:3000/api/register', {
       email: email,
-      password: password
+      password: password,
+      username: username
     })
   .then((response) => {
     if(response.data.success == false) {

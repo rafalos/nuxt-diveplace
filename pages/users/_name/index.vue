@@ -1,5 +1,11 @@
 <template>
-  <div><h1>Test</h1></div>
+<div class="container">
+  <div class="whiteContainer">
+    <h1 class="text-center">Public profile of {{user.username}}</h1>
+    <button class="stdbutton">Edit</button>
+  </div>
+</div>
+
 </template>
 
 <script>
@@ -8,9 +14,9 @@ export default {
   asyncData(context) {
       return axios.get('http://localhost:3000/api/users/' + context.route.params.name)
       .then((response) => {
-        console.log(response)
+        console.log(response.data)
         return {
-          user: response.data.user
+          user: response.data.foundUser
         }
       })
       .catch(function(error){

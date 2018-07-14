@@ -1,13 +1,19 @@
 <template>
   <div class="container">
-    <h1>Login</h1>
-      <input type="text" v-model="credientals.email">
-      <input type="password" v-model="credientals.password">
-      <button @click="login">Login</button>
-      <div v-if="notification.visible==1" class="alert alert-success">
-        {{notification.message}}
-      </div>
+   <div class="whiteContainer" style="padding: 15px;">
+    <h1 class="text-center">Login</h1>
+    <div class="row" style="margin-top: 40px;">
+    <div class="col-lg-12">
+      <input type="email" class="input-line" id="validationServer01" placeholder="Email adress (example@at.com)" required v-model="credientals.email">
+      <input type="password" @keydown.enter="login" class="input-line" id="validationServer02" placeholder="Password" required v-model="credientals.password">
+    </div>
   </div>
+  <button class="stdbutton" @click="login">Login</button>
+    <div v-if="notification.visible==1" class="alert alert-danger">
+        {{notification.message}}
+    </div>
+</div>
+</div>
 </template>
 
 <script>
