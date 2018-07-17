@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="progress">
-      <div class="progress-bar" role="progressbar" :style="{width: progress +'%'}" style="background: #143D61;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar" role="progressbar" :style="{width: progress +'%'}" style="background: #143D61;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
         <span class="text-center font-weight-bold" style="color-white">{{progress}}</span>
       </div>
     </div>
@@ -85,9 +85,10 @@
     </div>
 
 
-    <div v-show="step==4" class="whiteContainer">
+    <div v-show="step==4" class="whiteContainer" >
+      {{diveplace.images}}
       <h3 class="text-center">4. Upload images of your diveplace</h3>
-      <dropzone id="foo" ref="el" :options="options" :destroyDropzone="true"></dropzone>
+      <dropzone id="foo" ref="el" :options="options" :destroyDropzone="true" @vdropzone-files-added="processFiles($event)"></dropzone>
       <button @click="stepDown" class="stdbutton">Prev</button>
       <button @click="createDiveplace" class="stdbutton">Create</button>
     </div>
@@ -103,7 +104,7 @@
     data() {
       return {
         step: 1,
-        progress: 25,
+        progress: 0,
         marker: {
           lat:0,
           lng:0,
@@ -119,7 +120,8 @@
           coral: false,
           base: false,
           wreck: false,
-          road: false
+          road: false,
+          images: []
         },
         options:{
           url: "http://httpbin.org/anything"
@@ -147,7 +149,11 @@
         this.progress-=25
       },
       createDiveplace() {
-        console.log("clicked")
+        this.step=5;
+        this.progress=100;
+      },
+      processFiles(files, event) {
+         console.log(files, event)
       }
     },
     components: {
@@ -155,21 +161,3 @@
     }
   }
 </script>
-
-<style scoped>
-.input-line {
-  background: none;
-  margin-bottom: 10px;
-  line-height: 2.4em;
-  color: #143D61;
-  font-family: roboto;
-  font-weight: bold;
-  letter-spacing: 0px;
-  letter-spacing: 0.02rem;
-  font-size: 19px;
-  font-size: 1.8rem;
-  border-bottom: 2px solid rgba(70, 111, 162, 0.65);
-  -webkit-transition: all .2s ease;
-  transition: all .2s ease;
-}
-</style>
