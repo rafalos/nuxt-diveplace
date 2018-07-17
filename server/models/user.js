@@ -18,10 +18,19 @@ var UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    firstName: String,
+    lastName: String,
     admin: {
         type: Boolean,
         default: false
-    }
+    },
+    avatar:[],
+    certNumber: String,
+    visited:[],
+    calculations:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Calculation"
+    }],
 });
 
 UserSchema.pre("save", function(next){

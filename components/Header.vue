@@ -9,9 +9,10 @@
         <nuxt-link to="/login"><h4>Login</h4></nuxt-link>
         <nuxt-link to="/register"><h4>Register</h4></nuxt-link>
       </b-nav-item-dropdown>
-       <b-nav-item-dropdown v-else right :text="fetchUser.username">
+       <b-nav-item-dropdown v-else right :text="fetchUser.username" style="text-center">
         <nuxt-link :to="'/users/' + fetchUser.username"><h4>My profile</h4></nuxt-link>
-        <h4 @click="logout">Logout</h4>
+        <nuxt-link :to="'/users/' + fetchUser.username +'/edit'"><h4>Settings</h4></nuxt-link>
+        <h4 @click="logout" style="cursor: pointer">Logout</h4>
       </b-nav-item-dropdown>
     </b-navbar-nav>
   </b-collapse>
