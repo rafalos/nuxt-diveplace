@@ -1,15 +1,10 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-   	    <div class="whiteContainer">
-           <h4>{{diveplace.name}}</h4>
-        </div>
-   	  </div>
+  
     </div>
   <div class="row">
     <div class="col-md-6">
-      <div class="whiteContainer" style="padding: 0">
         <GmapMap
         :center="{lat: diveplace.lat, lng: diveplace.lng}"
         :zoom="11"
@@ -21,17 +16,9 @@
         :clickable="true"
         :draggable="false"/>
         </GmapMap>
-      </div>
     </div>
-    
-    <div class="col-md-6">
-      <Gallery :images="diveplace.image" />
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="whiteContainer" style="padding: 20px;">
+<div class="col-sm-6">
+      <div class="whiteContainer" style="padding: 30px; font-size: 0.8em; margin: 0" >
         <div class="row" id="details">
           <div class="col-sm-6">
             <ul>
@@ -56,10 +43,16 @@
             </div>
           </div>
       </div>
-    </div>
-
-    <div class="col-sm-6">
-      <div class="whiteContainer">
+  </div>
+  
+    <div class="col-lg-12">
+   	    <div class="whiteContainer" style="margin-bottom: 0px">
+           <h4 class="text-center">{{diveplace.name}}</h4>
+           <Gallery :images="diveplace.image" />
+        </div>
+   	  </div>
+    <div class="col-lg-12">
+      <div class="whiteContainer" style="margin: 0;">
       <div class="comment-section">
             <div id="input-container">
              <div class="form-group">
@@ -74,6 +67,16 @@
               <div class="col-md-12 single-comment-box ">
                 <strong style="font-size: 16px;">Author napisał/a:</strong>
                 <span class="pull-right">Data</span>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
+                <p class="normal comment-text">Text</p>
                 <p class="normal comment-text">Text</p>
               </div>
               </div>

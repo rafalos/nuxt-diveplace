@@ -5,7 +5,7 @@
     :zoom="6"
     ref="mapRef"
     map-type-id="terrain"
-    style="width: 100%; height: 500px"
+    style="width: 100%; height: 700px"
     :options="{styles: styles}"
     >
     <GmapInfoWindow :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
@@ -55,7 +55,7 @@ export default {
       center: { lat: 52.237049, lng: 21.017532 },
       places: [],
       icon: {
-        url: 'https://image.ibb.co/dOHvgy/marker.png',
+        url: 'https://image.ibb.co/eMmAWy/marker2.png',
         size: {width: 46, height: 46, f: 'px', b: 'px'},
         scaledSize: {width: 30, height: 50, f: 'px', b: 'px'}
       },
@@ -286,7 +286,7 @@ export default {
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#0e1626"
+        "color": "#5C9EAD"
       }
     ]
   },
@@ -295,7 +295,7 @@ export default {
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#4e6d70"
+        "color": "#FFFFFF"
       }
     ]
   }

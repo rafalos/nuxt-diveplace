@@ -5,7 +5,10 @@
         <Filterbox @nameChanged="updateSearch" @sightChanged="updateSight" @depthChanged="updateDepth" />
       </div>
       <div class="col-lg-9">
-        <Listitem v-for="diveplace in items" :key="diveplace._id" :diveplace="diveplace"/>
+        <div v-if="items.length==0">
+          <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
+        </div>
+        <Listitem v-else v-for="diveplace in items" :key="diveplace._id" :diveplace="diveplace"/>
       </div>  
     </div>
   </div>
