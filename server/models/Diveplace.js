@@ -17,13 +17,14 @@ var diveplaceSchema = new mongoose.Schema({
     coral: Boolean,
     garbage: Boolean,
     road: Boolean,
+    recommend: Number,
     published: {type: Boolean, default: false},
     comments:[{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Comment"
     }],
-		watchersNumber: Number,
-		watchersNicknames: []
+	watchersNumber: Number,
+	watchersNicknames: []
 })
 
 module.exports = mongoose.model("Diveplace", diveplaceSchema);

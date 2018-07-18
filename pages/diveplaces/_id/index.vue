@@ -1,99 +1,89 @@
 <template>
   <div class="container">
-    <div class="row">
-  
-    </div>
-  <div class="row">
-    <div class="col-md-6">
+  <div class="row whiteContainer" style="padding: 0">
+    <div class="col-md-6" style="padding: 0">
         <GmapMap
         :center="{lat: diveplace.lat, lng: diveplace.lng}"
         :zoom="11"
         map-type-id="terrain"
-        style="width: 100%; height: 350px">
+        style="width: 100%; height: 350px"
+        :options="{styles: styles}">
         <GmapMarker
         :position="{lat: diveplace.lat, lng: diveplace.lng}"
         :title="diveplace.name"
         :clickable="true"
-        :draggable="false"/>
+        :draggable="false"
+        :icon="icon"/>
         </GmapMap>
     </div>
-<div class="col-sm-6">
-      <div class="whiteContainer" style="padding: 30px; font-size: 0.8em; margin: 0" >
+<div class="col-sm-6" style="padding: 0;">
+  <div class="row">
+    <div class="col-lg-12">
+      <button class="boxButton float-right"><i class="fas fa-exclamation-triangle"></i></button>
+      <button class="boxButton float-right"><i class="fas fa-thumbtack"></i></button>
+      <button class="boxButton float-right"><i class="fas fa-thumbs-up"></i></button>
+    </div>
+  </div>
+  <h2 class="text-center">{{diveplace.name}}</h2>
+      <div style="padding: 20px; margin: 0" >
         <div class="row" id="details">
-          <div class="col-sm-6">
-            <ul>
-             <li>Widoczność</li>
-             <li>Max. głębokość</li>
-             <li>Powierzchnia</li>
-             <li>Wysokość</li>
+          <div class="col-sm-6" >
+            <ul style="list-style: none">
+             <li>Maximum sight: {{diveplace.sight}}</li>
+             <li>Maximum depth: {{diveplace.depth}} m</li>
+             <li>Surface: {{diveplace.surface}}</li>
+             <li>Height: {{diveplace.height}} m</li>
             </ul>
           </div>
           <div class="col-sm-6">
             <ul>
-              <li>Baza nurkowa</li>
-              <li>Koralowiec</li>
-              <li>Zatopiony wrak:</li>
-              <li>Tor podwodny:</li>
+              <li>Diving base: {{diveplace.base}}</li>
+              <li>Coral: {{diveplace.coral}}</li>
+              <li>Underwater wreck: {{diveplace.garbage}}</li>
+              <li>Underwater road: {{diveplace.road}}</li>
             </ul>      
           </div>
         </div>
           <div class="row">
-            <div class="col=lg-12">
-              <p>{{diveplace.description}}</p>
+            <div id="containerFooter">
+              <button class="stdbutton switchButton" @click="switchMode(1)">Details</button>
+              <button class="stdbutton switchButton" @click="switchMode(2)">Gallery ({{diveplace.image.length}})</button>
+              <button class="stdbutton switchButton" @click="switchMode(3)">Comments ({{diveplace.comments.length}})</button>
             </div>
           </div>
       </div>
   </div>
+  </div>
   
+  <div class="row whiteContainer" style="padding: 30px;">
     <div class="col-lg-12">
-   	    <div class="whiteContainer" style="margin-bottom: 0px">
-           <h4 class="text-center">{{diveplace.name}}</h4>
-           <Gallery :images="diveplace.image" />
-        </div>
-   	  </div>
-    <div class="col-lg-12">
-      <div class="whiteContainer" style="margin: 0;">
-      <div class="comment-section">
-            <div id="input-container">
-             <div class="form-group">
-               <textarea class="descriptionField" cols="40" rows ="1" name="comment[text]" placeholder="Napisz swoją opinię"></textarea></div>
-            </div>
-             <div class="form-group">
-               <button class="stdbutton">Dodaj</button>
-             </div>
-            <div style="padding: 10px;">
-              <hr>
-              <div class="row comment-box" >
-              <div class="col-md-12 single-comment-box ">
-                <strong style="font-size: 16px;">Author napisał/a:</strong>
-                <span class="pull-right">Data</span>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-                <p class="normal comment-text">Text</p>
-              </div>
-              </div>
-            </div>
-      </div>
-      </div>
+      <Comments :comments="diveplace.comments" v-if="mode==3"/>
+      <Gallery :images="diveplace.image" v-if="mode==2"/>
+      <Details :description="diveplace.description" v-if="mode==1"/>
     </div>
   </div>
-  </div>
+</div>
 </template>
 
 <script>
   import axios from 'axios'
   import Gallery from '@/components/diveplaces/show/Gallery'
+  import googleMapStyle from '@/assets/google-map-style'
+  import Comments from '@/components/diveplaces/show/Comments'
+  import Details from '@/components/diveplaces/show/Details'
 
   export default {
-
+    data() {
+      return {
+        mode: 2,
+        styles: googleMapStyle,
+        icon: {
+          url: 'https://image.ibb.co/eMmAWy/marker2.png',
+          size: {width: 46, height: 46, f: 'px', b: 'px'},
+          scaledSize: {width: 30, height: 50, f: 'px', b: 'px'}
+        },
+      }
+    },
     asyncData(context) {
       return axios.get('http://localhost:3000/api/diveplaces/' + context.route.params.id )
       .then((response) => {
@@ -107,7 +97,44 @@
       })
     },
     components: {
-      Gallery
+      Gallery,
+      Comments,
+      Details
+    },
+    methods: {
+      switchMode(param) {
+        this.mode = param;
+      }
     }
   }
 </script>
+
+<style scoped>
+#containerFooter {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  padding: 0;
+  padding-left: 15px;
+}
+
+.boxButton {
+	background-color:#143D61;
+	display:inline-block;
+	cursor:pointer;
+	color:white;
+	font-family:Verdana;
+	font-size:15px;
+  height: 40px;
+  width: 40px;
+	text-decoration:none;
+  margin-right: 5px;
+}
+
+.switchButton {
+  margin: 5px;
+  width: 30%;
+}
+ 
+</style>

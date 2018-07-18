@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const Diveplace  = require("./models/diveplace")
+const Comment = require("./models/Comment")
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
@@ -97,7 +98,7 @@ app.get("/api/diveplaces", (req,res) => {
 })
 
 app.get("/api/diveplaces/:id", (req,res) => {
-  Diveplace.findById(req.params.id, (err, foundDiveplace) => {
+  Diveplace.findById(req.params.id).populate('comments').exec((err, foundDiveplace) => {
     if(err) {
       console.log(err)
     } else {
