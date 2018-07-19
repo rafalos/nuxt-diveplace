@@ -15,7 +15,6 @@ const createStore = () => {
       clearAuth() {
         Cookie.remove('auth');
         this.state.auth = null
-        this.$router.push('/')
       }
     },
     actions: {

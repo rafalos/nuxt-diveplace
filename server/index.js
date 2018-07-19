@@ -125,11 +125,34 @@ app.get("/api/users/:username", function(req,res){
 
 
 
-
-
-
-
-
+/////////////COMMENT//////////////
+app.post("/api/diveplaces/:id/comment", function(req, res){
+    var d = new Date()
+    var date = d.toLocaleDateString();
+    let comment = {
+        author: req.body.user.username,
+        text: req.body.message,
+        date: date
+    }
+    Diveplace.findById(req.params.id).populate('comments').exec( function(err, foundDiveplace){
+        if(err) {
+            console.log(err)
+        } else {
+            Comment.create(comment, function(err, comment) {
+                if(err) {
+                    console.log(err)
+                } else {
+                    foundDiveplace.comments.push(comment)
+                    foundDiveplace.save()
+                    res.json({
+                        comments: foundDiveplace.comments,
+                        message: "Comment succesfully created"
+                    })
+                }
+            })
+        }
+    })
+})
 
 
 // Import and Set Nuxt.js options
