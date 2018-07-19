@@ -19,9 +19,9 @@
 <div class="col-sm-6" style="padding: 0;">
   <div class="row">
     <div class="col-lg-12">
-      <button class="boxButton float-right"><i class="fas fa-exclamation-triangle"></i></button>
-      <button class="boxButton float-right"><i class="fas fa-thumbtack"></i></button>
-      <button class="boxButton float-right"><i class="fas fa-thumbs-up"></i></button>
+      <button class="boxButton float-right"><i class="fas fa-exclamation-triangle" title="Report this diveplace" @click="reportDiveplace"></i></button>
+      <button class="boxButton float-right"><i class="fas fa-thumbtack" title="I was there!"></i></button>
+      <button class="boxButton float-right"><i class="fas fa-thumbs-up" title="I recommend it!"></i></button>
     </div>
   </div>
   <h2 class="text-center">{{diveplace.name}}</h2>
@@ -55,8 +55,8 @@
   </div>
   </div>
   
-  <div class="row whiteContainer" style="padding: 30px;">
-    <div class="col-lg-12">
+  <div class="row whiteContainer" style="padding: 0">
+    <div class="col-lg-12" style="padding: 0;">
       <Comments :comments="diveplace.comments" v-if="mode==3"/>
       <Gallery :images="diveplace.image" v-if="mode==2"/>
       <Details :description="diveplace.description" v-if="mode==1"/>
@@ -104,6 +104,9 @@
     methods: {
       switchMode(param) {
         this.mode = param;
+      },
+      reportDiveplace() {
+        confirm("Are you sure?")
       }
     }
   }
@@ -117,19 +120,6 @@
   width: 100%;
   padding: 0;
   padding-left: 15px;
-}
-
-.boxButton {
-	background-color:#143D61;
-	display:inline-block;
-	cursor:pointer;
-	color:white;
-	font-family:Verdana;
-	font-size:15px;
-  height: 40px;
-  width: 40px;
-	text-decoration:none;
-  margin-right: 5px;
 }
 
 .switchButton {

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <img @click="showImage($event)" v-for="image in images" :key="image" class="img-thumbnail image" :src="`http://res.cloudinary.com/hoahkzu0h/${image}`" style="height: 150px; width: 150px">   
+  <img @click="showImage($event)" v-for="image in images" :key="image" class="img-thumbnail image" :src="`http://res.cloudinary.com/hoahkzu0h/${image}`" style="height: 200px;">   
 </div>
 </template>
 
