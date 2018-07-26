@@ -12,6 +12,7 @@
        <b-nav-item-dropdown v-else right :text="fetchUser.username" style="text-center">
         <nuxt-link :to="'/users/' + fetchUser.username"><h4>My profile</h4></nuxt-link>
         <nuxt-link :to="'/users/' + fetchUser.username +'/edit'"><h4>Settings</h4></nuxt-link>
+        <nuxt-link to='/admin' v-if="fetchUser.admin"><h4>Admin</h4></nuxt-link>
         <h4 @click="logout" style="cursor: pointer">Logout</h4>
       </b-nav-item-dropdown>
     </b-navbar-nav>
