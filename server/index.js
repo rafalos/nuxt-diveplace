@@ -7,8 +7,8 @@ const port = process.env.PORT || 3000
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const Diveplace  = require("./models/diveplace")
+const TempDiveplace = require("./models/TempDiveplace")
 const Comment = require("./models/Comment")
-const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const User = require('./models/user')
@@ -97,6 +97,19 @@ app.get("/api/diveplaces", (req,res) => {
   })
 })
 
+app.get("/api/tempdiveplaces", (req, res) => {
+    TempDiveplace.find({}, (err, foundTempDiveplaces) => {
+      if(err) {
+        console.log(err)
+      } else {
+				res.json({
+					foundTempDiveplaces
+				})
+			}
+  })
+})
+
+
 app.get("/api/diveplaces/:id", (req,res) => {
   Diveplace.findById(req.params.id).populate('comments').exec((err, foundDiveplace) => {
     if(err) {
@@ -152,6 +165,23 @@ app.post("/api/diveplaces/:id/comment", function(req, res){
             })
         }
     })
+})
+
+
+
+
+
+////////////////////ADMIN////////////////
+app.get("/api/users", (req, res) => {
+	User.find({}, (err, foundUsers) => {
+		if(err) {
+			console.log(err)
+		} else {
+			res.json({
+				foundUsers
+			})
+		}
+	})
 })
 
 

@@ -1,8 +1,18 @@
 <template>
   <div id="main">
+    <Header />
     <nuxt/>
   </div>
 </template>
+
+<script>
+import Header from "@/components/admin/Header"
+  export default {
+    components: {
+      Header
+    }
+  }
+</script>
 
 <style>
 a:hover {
