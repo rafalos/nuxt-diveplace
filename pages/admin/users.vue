@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Users registered: {{users.length}}</h1>
     <div v-for="user in users" :key="user._id" style="color: white">
       {{user.username}}
     </div>

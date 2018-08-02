@@ -1,5 +1,14 @@
 <template>
   <div class="container">
+      <modal name="report">
+        <h3 class="text-center">Report {{diveplace.name}} </h3>
+        <select>
+          <option>Wrong data</option>
+          <option>Offensive language</option>
+          <option>Non exisiting place</option>
+        </select>
+        <button class="stdbutton" @click="reportDiveplace(diveplace._id)">Submit</button>
+      </modal>
   <div class="row whiteContainer" style="padding: 0">
     <div class="col-md-6" style="padding: 0">
         <GmapMap
@@ -19,7 +28,7 @@
 <div class="col-sm-6" style="padding: 0;">
   <div class="row">
     <div class="col-lg-12">
-      <button class="boxButton float-right"><i class="fas fa-exclamation-triangle" title="Report this diveplace" @click="reportDiveplace"></i></button>
+      <button class="boxButton float-right"><i class="fas fa-exclamation-triangle" title="Report this diveplace" @click="$modal.show('report')"></i></button>
       <button class="boxButton float-right"><i class="fas fa-thumbtack" title="I was there!"></i></button>
       <button class="boxButton float-right"><i class="fas fa-thumbs-up" title="I recommend it!"></i></button>
     </div>
@@ -106,7 +115,10 @@
         this.mode = param;
       },
       reportDiveplace() {
-        confirm("Are you sure?")
+        axios.post(`http://localhost:3000/api/diveplaces/'${this.$route.params.id}/report`)
+        .then((response) => {
+          console.log("reported")
+        })
       }
     }
   }

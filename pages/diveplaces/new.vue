@@ -149,11 +149,14 @@
         this.progress-=25
       },
       createDiveplace() {
+        axios.post('/api/diveplacs', this.diveplace).then( (response) => {
+          console.log(response)
+        })
         this.step=5;
         this.progress=100;
       },
       processFiles(files, event) {
-         console.log(files, event)
+         this.diveplace.images = files
       }
     },
     components: {

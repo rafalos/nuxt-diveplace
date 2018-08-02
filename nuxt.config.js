@@ -36,7 +36,8 @@ module.exports = {
   */
   plugins: [
     {src: '@/plugins/vue2-google-maps.js'},
-    {src: '@/plugins/vue-gallery.js', ssr: false }
+    {src: '@/plugins/vue-gallery.js', ssr: false },
+    {src: '@/plugins/vue-js-modal.js'}
   ],
 
   /*

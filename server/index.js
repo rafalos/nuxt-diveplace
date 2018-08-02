@@ -12,6 +12,7 @@ const Comment = require("./models/Comment")
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const User = require('./models/user')
+const Report = require('./models/Report')
 const authCfg = require('./config/config.js')
 
 
@@ -86,7 +87,7 @@ app.post("/api/login", function(req, res){
 ////////////////////////////////////////////////
 
 app.get("/api/diveplaces", (req,res) => {
-  Diveplace.find({}, (err,foundDiveplace) => {
+  Diveplace.find({published: true}, (err,foundDiveplace) => {
     if(err) {
       console.log(err)
     } else {
@@ -97,16 +98,8 @@ app.get("/api/diveplaces", (req,res) => {
   })
 })
 
-app.get("/api/tempdiveplaces", (req, res) => {
-    TempDiveplace.find({}, (err, foundTempDiveplaces) => {
-      if(err) {
-        console.log(err)
-      } else {
-				res.json({
-					foundTempDiveplaces
-				})
-			}
-  })
+app.post("/api/diveplacs", (req, res) =>  {
+  console.log(res)
 })
 
 
@@ -183,6 +176,54 @@ app.get("/api/users", (req, res) => {
 		}
 	})
 })
+
+
+app.get("/api/reviewdiveplaces", (req, res) => {
+    Diveplace.find({published: false}, (err, foundDiveplaces) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json({
+                foundDiveplaces
+            })
+        }
+    })
+})
+
+app.post("/api/reviewdiveplaces/accept", (req, res) => {
+    Diveplace.findByIdAndUpdate(req.body.id, {published:true}, (err, updatedDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json({
+                message: "Published succesfully"
+            })
+        }
+    })
+})
+
+app.post("/api/diveplaces/unpublish", (req, res) => {
+    Diveplace.findByIdAndUpdate(req.body.id, {published:false}, (err, updatedDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json({
+                message: "Unpublished succesfully"
+            })
+        }
+    })
+})
+
+
+app.post("/api/reviewdiveplaces/dismiss", (req, res) => {
+    console.log("dismiss hitted")
+})
+
+app.post("/api/diveplaces/:id/report", (req, res) => {
+    console.log("report hitted for" + req.params.id)
+})
+
+
 
 
 // Import and Set Nuxt.js options
