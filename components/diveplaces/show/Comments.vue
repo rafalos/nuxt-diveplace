@@ -46,7 +46,6 @@ import axios from 'axios'
         })
         .then((response) => {
         this.comment=''
-        console.log(response.data)
         this.commentsRaw = response.data.comments
         this.$emit("commentAdded", response.data.comments)
         return {

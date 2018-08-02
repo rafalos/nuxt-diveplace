@@ -1,14 +1,21 @@
 <template>
   <div class="container">
       <modal name="report">
-        <h3 class="text-center">Report {{diveplace.name}} </h3>
-        <select>
+        <div style="padding: 10px">
+        <h3 class="text-center">Report {{diveplace.name}}</h3>
+        <input type="text" :value="this.$store.state.auth.user.username" readonly>
+        <select class="form-control" v-model="report.reason">
           <option>Wrong data</option>
           <option>Offensive language</option>
           <option>Non exisiting place</option>
         </select>
+        <div>
+        <textarea class="form-control" v-model="report.description"></textarea>
+        </div>
         <button class="stdbutton" @click="reportDiveplace(diveplace._id)">Submit</button>
+        </div>
       </modal>
+
   <div class="row whiteContainer" style="padding: 0">
     <div class="col-md-6" style="padding: 0">
         <GmapMap
@@ -28,7 +35,7 @@
 <div class="col-sm-6" style="padding: 0;">
   <div class="row">
     <div class="col-lg-12">
-      <button class="boxButton float-right"><i class="fas fa-exclamation-triangle" title="Report this diveplace" @click="$modal.show('report')"></i></button>
+      <button class="boxButton float-right" @click="$modal.show('report')"><i class="fas fa-exclamation-triangle" title="Report this diveplace"></i></button>
       <button class="boxButton float-right"><i class="fas fa-thumbtack" title="I was there!"></i></button>
       <button class="boxButton float-right"><i class="fas fa-thumbs-up" title="I recommend it!"></i></button>
     </div>
@@ -66,7 +73,7 @@
   
   <div class="row whiteContainer" style="padding: 0">
     <div class="col-lg-12" style="padding: 0;">
-      <Comments :comments="diveplace.comments" v-if="mode==3"/>
+      <Comments @commentAdded="updateData" :comments="diveplace.comments" v-if="mode==3"/>
       <Gallery :images="diveplace.image" v-if="mode==2"/>
       <Details :description="diveplace.description" v-if="mode==1"/>
     </div>
@@ -85,6 +92,10 @@
     data() {
       return {
         mode: 2,
+        report: {
+          reason: '',
+          description: ''
+        },
         styles: googleMapStyle,
         icon: {
           url: 'https://image.ibb.co/eMmAWy/marker2.png',
@@ -94,9 +105,8 @@
       }
     },
     asyncData(context) {
-      return axios.get('http://localhost:3000/api/diveplaces/' + context.route.params.id )
+      return axios.get(`http://localhost:3000/api/diveplaces/${context.route.params.id}`)
       .then((response) => {
-        console.log(response)
         return {
           diveplace: response.data.foundDiveplace
         }
@@ -114,13 +124,27 @@
       switchMode(param) {
         this.mode = param;
       },
-      reportDiveplace() {
-        axios.post(`http://localhost:3000/api/diveplaces/'${this.$route.params.id}/report`)
-        .then((response) => {
+      reportDiveplace(diveplace) {
+          axios.post(`http://localhost:3000/api/diveplaces/'${this.$route.params.id}/report`, {
+            id: diveplace,
+            date: new Date(),
+            author: this.$store.state.auth.user.username,
+            reason: this.report.reason,
+            description: this.report.description
+          })
+          .then((response) => {
           console.log("reported")
+          this.$modal.hide('report')
         })
-      }
+      },
+      updateData() {
+      axios.get(`http://localhost:3000/api/diveplaces/${this.$route.params.id}`)
+      .then((response) => {
+        this.diveplace = response.data.foundDiveplace
+      })
     }
+    }
+   
   }
 </script>
 

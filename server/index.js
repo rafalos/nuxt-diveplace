@@ -220,7 +220,15 @@ app.post("/api/reviewdiveplaces/dismiss", (req, res) => {
 })
 
 app.post("/api/diveplaces/:id/report", (req, res) => {
-    console.log("report hitted for" + req.params.id)
+   Report.create(req.body, (err, createdReport) => {
+       if(err) {
+           console.log(err)
+       } else {
+           res.json({
+               message: "Report submitted"
+           })
+       }
+   })
 })
 
 
