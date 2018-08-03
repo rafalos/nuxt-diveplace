@@ -4,11 +4,14 @@
       <div class="col-lg-3" style="padding-right: 0">
         <Filterbox @nameChanged="updateSearch" @sightChanged="updateSight" @depthChanged="updateDepth" />
       </div>
-      <div class="col-lg-9">
-        <div v-if="items.length==0">
+      <div class="col-lg-9">   
+      <div id="loading" v-if="loader==1">
+        <div class="loader"></div>
+      </div>
+        <div v-if="diveplaces.length==0">
           <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
         </div>
-        <Listitem v-else v-for="diveplace in items" :key="diveplace._id" :diveplace="diveplace"/>
+        <Listitem v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace"/>
       </div>  
     </div>
   </div>
@@ -22,6 +25,8 @@ import Filterbox from '@/components/diveplaces/Filterbox'
   export default {
     data() {
       return {
+        showDiveplaces: 1,
+        loader: 0,
         search: '',
         depth: 50,
         sight: 50
@@ -30,7 +35,6 @@ import Filterbox from '@/components/diveplaces/Filterbox'
     asyncData() {
       return axios.get('http://localhost:3000/api/diveplaces')
       .then((response) => {
-        console.log(response)
         return {
           diveplaces: response.data.foundDiveplace,
         }
@@ -39,22 +43,29 @@ import Filterbox from '@/components/diveplaces/Filterbox'
         console.log(error)
       })
     },
-    computed: {
-      items() {
-        return this.diveplaces.filter((e)=>{
-           return e.name.toLowerCase().match(this.search.toLowerCase()) && e.depth < this.depth && e.sight < this.sight
-        })
-      }
-    },
     methods: {
       updateSearch(value) {
-        this.search = value
+        console.log("called update")
+        this.loader = 1
+        axios.post('http://localhost:3000/api/diveplaces/search', {name: value})
+        .then((response)=> {
+          this.diveplaces = response.data.foundDiveplace;
+          this.loader= 0
+        })
       },
       updateSight(value) {
-        this.sight = value
+        this.loader = 1
+        axios.post('http://localhost:3000/api/diveplaces/search', {sight: value})
+        .then((response)=> {
+          this.diveplaces = response.data.foundDiveplace;
+          this.loader= 0
+        })
       },
       updateDepth(value) {
-        this.depth = value
+        axios.post('http://localhost:3000/api/diveplaces/search', {depth: value})
+        .then((response)=> {
+          this.diveplaces = response.data.foundDiveplace;
+        })
       }
     },
     components: {
@@ -65,5 +76,11 @@ import Filterbox from '@/components/diveplaces/Filterbox'
 </script>
 
 <style scoped>
-
+  #loading {
+  margin-left: 100px;
+  position: absolute;
+  bottom: 50;
+  left: 50;
+  z-index: 999;
+  }
 </style>

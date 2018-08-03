@@ -126,7 +126,7 @@
       },
       reportDiveplace(diveplace) {
           axios.post(`http://localhost:3000/api/diveplaces/'${this.$route.params.id}/report`, {
-            id: diveplace,
+            diveplaceId: diveplace,
             date: new Date(),
             author: this.$store.state.auth.user.username,
             reason: this.report.reason,

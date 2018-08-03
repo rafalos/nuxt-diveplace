@@ -52,7 +52,6 @@ app.post("/api/register", function(req, res) {
 })
 
 app.post("/api/login", function(req, res){
-    console.log(req.body)
   User.findOne({
       email: req.body.email
   }, function(err, user) {
@@ -96,6 +95,29 @@ app.get("/api/diveplaces", (req,res) => {
        });
     }
   })
+})
+
+app.post("/api/diveplaces/search", (req,res) => {
+    let query = {}
+    if(req.body.name) {
+        query.name = {"$regex" : req.body.name, "$options": "i"}
+    }
+    if(req.body.sight) {
+        query.sight = {'$lte': req.body.sight}
+    }
+    if(req.body.depth) {
+        query.depth= {'$lte': req.body.depth}
+    }
+
+    Diveplace.find(query, (err, foundDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json({
+                foundDiveplace
+            })
+        }
+    })
 })
 
 app.post("/api/diveplacs", (req, res) =>  {
@@ -229,6 +251,18 @@ app.post("/api/diveplaces/:id/report", (req, res) => {
            })
        }
    })
+})
+
+app.get("/api/admin/reports", (req,res) => {
+    Report.find({}, (err, foundReports) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json({
+                foundReports
+            })
+        }
+    })
 })
 
 
