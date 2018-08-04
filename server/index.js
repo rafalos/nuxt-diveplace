@@ -99,6 +99,7 @@ app.get("/api/diveplaces", (req,res) => {
 
 app.post("/api/diveplaces/search", (req,res) => {
     let query = {}
+    query.published = true;
     if(req.body.name) {
         query.name = {"$regex" : req.body.name, "$options": "i"}
     }
@@ -108,6 +109,7 @@ app.post("/api/diveplaces/search", (req,res) => {
     if(req.body.depth) {
         query.depth= {'$lte': req.body.depth}
     }
+
 
     Diveplace.find(query, (err, foundDiveplace) => {
         if(err) {

@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const webpack = require('webpack')
 
 module.exports = {
   mode: 'universal',
@@ -63,6 +64,11 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+  plugins: [
+    new webpack.ProvidePlugin({
+      '_': 'lodash'
+    })
+  ],
     extend(config, ctx) {
       if (!ctx.isClient) {
         // This instructs Webpack to include `vue2-google-maps`'s Vue files

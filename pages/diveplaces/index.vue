@@ -8,7 +8,7 @@
       <div id="loading" v-if="loader==1">
         <div class="loader"></div>
       </div>
-        <div v-if="diveplaces.length==0">
+        <div v-else-if="diveplaces.length==0">
           <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
         </div>
         <Listitem v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace"/>
@@ -78,7 +78,7 @@ import Filterbox from '@/components/diveplaces/Filterbox'
 <style scoped>
   #loading {
   margin-left: 100px;
-  position: absolute;
+  position: relative;
   bottom: 50;
   left: 50;
   z-index: 999;

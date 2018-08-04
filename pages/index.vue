@@ -64,7 +64,6 @@ import Singlebox from '@/components/Singlebox'
     asyncData() {
       return axios.get('http://localhost:3000/api/diveplaces')
       .then((response) => {
-        console.log(response)
         return {
           diveplaces: response.data.foundDiveplace
         }
