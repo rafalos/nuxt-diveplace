@@ -2,7 +2,7 @@
  <div class="container">
     <div class="row">
       <div class="col-lg-3" style="padding-right: 0">
-        <Filterbox @nameChanged="updateSearch" @sightChanged="updateSight" @depthChanged="updateDepth" />
+        <Filterbox @filterChanged="updateData"/>
       </div>
       <div class="col-lg-9">   
       <div id="loading" v-if="loader==1">
@@ -44,27 +44,18 @@ import Filterbox from '@/components/diveplaces/Filterbox'
       })
     },
     methods: {
-      updateSearch(value) {
-        console.log("called update")
+      updateData(name, depth, sight) {
+        console.log(name + " " + depth + " " + sight)
         this.loader = 1
-        axios.post('http://localhost:3000/api/diveplaces/search', {name: value})
+         axios.post('http://localhost:3000/api/diveplaces/search', 
+         {
+           name: name,
+           depth: depth,
+           sight: sight
+          })
         .then((response)=> {
           this.diveplaces = response.data.foundDiveplace;
           this.loader= 0
-        })
-      },
-      updateSight(value) {
-        this.loader = 1
-        axios.post('http://localhost:3000/api/diveplaces/search', {sight: value})
-        .then((response)=> {
-          this.diveplaces = response.data.foundDiveplace;
-          this.loader= 0
-        })
-      },
-      updateDepth(value) {
-        axios.post('http://localhost:3000/api/diveplaces/search', {depth: value})
-        .then((response)=> {
-          this.diveplaces = response.data.foundDiveplace;
         })
       }
     },

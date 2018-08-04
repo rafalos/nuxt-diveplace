@@ -7,9 +7,9 @@
 		  <div class="col-md-8 col-xs-6 content-column">
 			  <h3 class="text-center head-text">{{diveplace.name}}</h3>
 			    <div id="content-container">
-            <h4>Kraj: {{diveplace.country}} </h4>
-			      <h4>Głębokość maksymalna {{diveplace.depth}} m.</h4>
-	          <span class="pull-right"> Dodał: </span>
+            <h5>Country: {{diveplace.country}} </h5>
+			      <h5>Maximum depth: {{diveplace.depth}} m.</h5>
+            <h5>Maximum sight: {{diveplace.sight}} m.</h5>
 		      </div>                   
       </div>	
 		</div>

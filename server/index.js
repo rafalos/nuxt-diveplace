@@ -98,23 +98,16 @@ app.get("/api/diveplaces", (req,res) => {
 })
 
 app.post("/api/diveplaces/search", (req,res) => {
-    let query = {}
-    query.published = true;
-    if(req.body.name) {
-        query.name = {"$regex" : req.body.name, "$options": "i"}
-    }
-    if(req.body.sight) {
-        query.sight = {'$lte': req.body.sight}
-    }
-    if(req.body.depth) {
-        query.depth= {'$lte': req.body.depth}
-    }
-
-
-    Diveplace.find(query, (err, foundDiveplace) => {
+    Diveplace.find({
+        "published": "true",
+        "name": { $regex: req.body.name, $options: 'i' },
+        "depth": { $lte: req.body.depth },
+        "sight": { $lte: req.body.sight }
+    }, (err, foundDiveplace) => {
         if(err) {
             console.log(err)
         } else {
+            console.log(foundDiveplace.length)
             res.json({
                 foundDiveplace
             })

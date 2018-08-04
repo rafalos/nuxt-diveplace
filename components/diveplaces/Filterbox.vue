@@ -7,11 +7,11 @@
 		</div>
     <div class="form-group">
       <label for="depth">Max. depth: <span id="depthValue">{{depth}}</span> m</label>
-      <input name="depth" v-model="depth" type="range" min="1" max="150" style="width: 100%" @input="sendDepth($event)">
+      <input name="depth" v-model="depth" type="range" min="1" max="150" style="width: 100%">
 		</div>
     <div class="form-group">
-      <label for="sight">Max. height: <span id="sightValue">{{sight}}</span> m</label>
-      <input @input="sendSight($event)" name="sight" v-model="sight" class="slideRange" id="sightSlider" type="range" min="1" max="100" step="1" value="20" style="width: 100%">
+      <label for="sight">Max. sight: <span id="sightValue">{{sight}}</span> m</label>
+      <input name="sight" v-model="sight" class="slideRange" id="sightSlider" type="range" min="1" max="100" step="1" value="20" style="width: 100%">
 		</div>
     <div class="form-group">
       <label for="country">Country</label>
@@ -41,7 +41,7 @@
           } else if (this.searchQueryIsDirty) {
             return '⟳ searching'
           } else {
-            this.$emit("nameChanged", this.name)  
+            this.$emit("filterChanged", this.name, parseInt(this.depth), parseInt(this.sight))
           }
         }
       },
@@ -49,15 +49,17 @@
         name() {
           this.searchQueryIsDirty = true
           this.expensiveOperation()
-        }
+        },
+        depth() {
+          this.searchQueryIsDirty = true
+          this.expensiveOperation()
+        },
+        sight() {
+          this.searchQueryIsDirty = true
+          this.expensiveOperation()
+        },
       },
     methods: {
-      sendDepth(e) {
-        this.$emit("depthChanged",this.depth)
-      },
-      sendSight(e) {
-        this.$emit("sightChanged",this.sight)
-      },
       expensiveOperation: _.debounce(function () {
           this.isCalculating = true
           setTimeout(function () {
