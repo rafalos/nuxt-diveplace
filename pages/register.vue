@@ -11,7 +11,6 @@
       <input type="password" class="input-line"  placeholder="Confirm password" required>
     </div>
     <div class="col-lg-6">
-      1
     </div>
   </div>
   <div class="form-group">

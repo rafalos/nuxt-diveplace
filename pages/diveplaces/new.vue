@@ -103,6 +103,7 @@
     middleware: "authenticated",
     data() {
       return {
+        files: [],
         step: 1,
         progress: 0,
         marker: {
@@ -120,8 +121,7 @@
           coral: false,
           base: false,
           wreck: false,
-          road: false,
-          images: []
+          road: false
         },
         options:{
           url: "http://httpbin.org/anything"
@@ -149,14 +149,23 @@
         this.progress-=25
       },
       createDiveplace() {
-        axios.post('/api/diveplacs', this.diveplace).then( (response) => {
-          console.log(response)
-        })
         this.step=5;
         this.progress=100;
+        var formData = new FormData();
+        for(let i=0; i<this.files.length; i++) {
+          formData.append('images', this.files[i]);
+        }
+        axios.post("/api/diveplaces", this.diveplace)
+        .then((response)=>{
+          axios.post(`/api/diveplaces/${response.data.createdDiveplace._id}/images`, formData)
+          .then( (response) => {
+          console.log(response)
+        })
+        })
+
       },
       processFiles(files, event) {
-         this.diveplace.images = files
+         this.files = files
       }
     },
     components: {

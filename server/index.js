@@ -14,14 +14,34 @@ const passport = require('passport')
 const User = require('./models/user')
 const Report = require('./models/Report')
 const authCfg = require('./config/config.js')
+const cloudinary = require('cloudinary')
+const cloudinaryStorage = require('multer-storage-cloudinary')
+const multer = require("multer")
+
+
+cloudinary.config({
+    cloud_name: 'hoahkzu0h',
+    api_key: '693393437426324',
+    api_secret: 'dspt87CYkQhZoO0NmLX4cOAjK4E'
+  });
+
+  var storage = cloudinaryStorage({
+    cloudinary: cloudinary,
+    folder: 'uploads',
+    allowedFormats: ['jpg', 'png'],
+    filename: function (req, file, cb) {
+      cb(undefined, Math.floor(Math.random()*9000000));
+    }
+  });
+  var upload = multer({ storage : storage })
 
 
 app.set('port', port)
 mongoose.connect('mongodb://rafalos:rafal1@ds161245.mlab.com:61245/diveplaces');
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize())
 require("./config/passport.js")(passport)
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 //auth//
 app.post("/api/register", function(req, res) {
@@ -115,8 +135,31 @@ app.post("/api/diveplaces/search", (req,res) => {
     })
 })
 
-app.post("/api/diveplacs", (req, res) =>  {
-  console.log(res)
+app.post("/api/diveplaces", (req, res) => {
+    Diveplace.create(req.body.diveplace, (err, createdDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json({
+                createdDiveplace
+            })
+        }
+    })
+})
+
+app.post("/api/diveplaces/:id/images", upload.array('images', 10) , (req, res) =>  {
+    let filenames = []
+    req.files.forEach(function(file){
+        filenames.push(file.public_id)
+    })
+    Diveplace.findById(req.params.id, (err, foundDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            foundDiveplace.image = filenames
+            foundDiveplace.save()
+        }
+    })
 })
 
 
