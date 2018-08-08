@@ -7,7 +7,7 @@
         <img class="img img-thumbnail mx-auto d-block" style="height: 200px;" :src="`http://res.cloudinary.com/hoahkzu0h/${diveplace.image[0]}`">
         <div style="padding: 5px;">
         <button @click="acceptDiveplace(diveplace._id)" class="btn btn-success"><i class="fas fa-check"></i></button>
-        <button @click="dismissDiveplace(diveplace._id)" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+        <button @click="destroyDiveplace(diveplace._id)" class="btn btn-danger"><i class="fas fa-trash"></i></button>
         <button class="btn btn-secondary"><i class="fas fa-map-pin"></i></button>
         <button class="btn btn-info"><i class="fas fa-info"></i></button>
         <button class="btn btn-info"><i class="fas fa-images"></i> ({{diveplace.image.length}})</button>
@@ -24,9 +24,8 @@ import axios from 'axios'
     middleware: 'isAdmin',
     layout: 'admin',
      asyncData() {
-      return axios.get('http://localhost:3000/api/reviewdiveplaces')
+      return axios.get('http://localhost:3000/api/admin/reviewdiveplaces')
       .then((response) => {
-        console.log(response)
         return {
           diveplaces: response.data.foundDiveplaces,
         }
@@ -37,17 +36,22 @@ import axios from 'axios'
     },
     methods: {
       acceptDiveplace(diveplace) {
-        axios.post('http://localhost:3000/api/reviewdiveplaces/accept', {id: diveplace})
-        .then( (response) => {
-          axios.get("http://localhost:3000/api/reviewdiveplaces")
+        axios.post('http://localhost:3000/api/admin/diveplaces/accept', {id: diveplace})
+        .then((response) => {
+          axios.get("http://localhost:3000/api/admin/reviewdiveplaces")
           .then((response)=> {
-            console.log(response.data)
             this.diveplaces = response.data.foundDiveplaces
           })
         })
       },
       destroyDiveplace(diveplace) {
-        confirm("Are you sure?")
+        axios.post('http://localhost:3000/api/admin/diveplaces/delete',{id: diveplace})
+        .then((response)=> {
+          axios.get("http://localhost:3000/api/admin/reviewdiveplaces")
+          .then((response)=> {
+            this.diveplaces = response.data.foundDiveplaces
+          })
+        })
       }
     }
   }

@@ -19,7 +19,6 @@ import axios from 'axios'
      asyncData() {
       return axios.get('http://localhost:3000/api/diveplaces')
       .then((response) => {
-        console.log(response)
         return {
           diveplaces: response.data.foundDiveplace,
         }
@@ -30,12 +29,10 @@ import axios from 'axios'
     },
     methods: {
       unpublishDiveplace(diveplace){
-        axios.post("http://localhost:3000/api/diveplaces/unpublish", {id: diveplace})
+        axios.post("http://localhost:3000/api/admin/diveplaces/unpublish", {id: diveplace})
         .then( (response) => {
-          console.log(response)
           axios.get("http://localhost:3000/api/diveplaces")
           .then((response)=> {
-            console.log(response.data)
             this.diveplaces = response.data.foundDiveplace
           })
         })

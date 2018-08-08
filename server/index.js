@@ -127,7 +127,6 @@ app.post("/api/diveplaces/search", (req,res) => {
         if(err) {
             console.log(err)
         } else {
-            console.log(foundDiveplace.length)
             res.json({
                 foundDiveplace
             })
@@ -136,6 +135,7 @@ app.post("/api/diveplaces/search", (req,res) => {
 })
 
 app.post("/api/diveplaces", (req, res) => {
+    console.log(req.body)
     Diveplace.create(req.body.diveplace, (err, createdDiveplace) => {
         if(err) {
             console.log(err)
@@ -238,7 +238,7 @@ app.get("/api/users", (req, res) => {
 })
 
 
-app.get("/api/reviewdiveplaces", (req, res) => {
+app.get("/api/admin/reviewdiveplaces", (req, res) => {
     Diveplace.find({published: false}, (err, foundDiveplaces) => {
         if(err) {
             console.log(err)
@@ -250,7 +250,7 @@ app.get("/api/reviewdiveplaces", (req, res) => {
     })
 })
 
-app.post("/api/reviewdiveplaces/accept", (req, res) => {
+app.post("/api/admin/diveplaces/accept", (req, res) => {
     Diveplace.findByIdAndUpdate(req.body.id, {published:true}, (err, updatedDiveplace) => {
         if(err) {
             console.log(err)
@@ -262,7 +262,7 @@ app.post("/api/reviewdiveplaces/accept", (req, res) => {
     })
 })
 
-app.post("/api/diveplaces/unpublish", (req, res) => {
+app.post("/api/admin/diveplaces/unpublish", (req, res) => {
     Diveplace.findByIdAndUpdate(req.body.id, {published:false}, (err, updatedDiveplace) => {
         if(err) {
             console.log(err)
@@ -275,8 +275,16 @@ app.post("/api/diveplaces/unpublish", (req, res) => {
 })
 
 
-app.post("/api/reviewdiveplaces/dismiss", (req, res) => {
-    console.log("dismiss hitted")
+app.post("/api/admin/diveplaces/delete", (req, res) => {
+    Diveplace.findByIdAndRemove(req.body.id, (err, deletedDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            res.json({
+                message: "Deleted succesfully"
+            })
+        }
+    })
 })
 
 app.post("/api/diveplaces/:id/report", (req, res) => {

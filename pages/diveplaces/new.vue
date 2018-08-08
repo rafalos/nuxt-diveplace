@@ -121,7 +121,9 @@
           coral: false,
           base: false,
           wreck: false,
-          road: false
+          road: false,
+          lat: 0,
+          lng: 0
         },
         options:{
           url: "http://httpbin.org/anything"
@@ -149,6 +151,8 @@
         this.progress-=25
       },
       createDiveplace() {
+        this.diveplace.lat = this.marker.lat
+        this.diveplace.lng = this.marker.lng
         this.step=5;
         this.progress=100;
         var formData = new FormData();
