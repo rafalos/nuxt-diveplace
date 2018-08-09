@@ -82,7 +82,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import axios from '@/plugins/axios'
   import Gallery from '@/components/diveplaces/show/Gallery'
   import googleMapStyle from '@/assets/google-map-style'
   import Comments from '@/components/diveplaces/show/Comments'
@@ -105,7 +105,7 @@
       }
     },
     asyncData(context) {
-      return axios.get(`http://localhost:3000/api/diveplaces/${context.route.params.id}`)
+      return axios.get(`api/diveplaces/${context.route.params.id}`)
       .then((response) => {
         return {
           diveplace: response.data.foundDiveplace
@@ -125,7 +125,7 @@
         this.mode = param;
       },
       reportDiveplace(diveplace) {
-          axios.post(`http://localhost:3000/api/diveplaces/'${this.$route.params.id}/report`, {
+          axios.post(`api/diveplaces/'${this.$route.params.id}/report`, {
             diveplaceId: diveplace,
             date: new Date(),
             author: this.$store.state.auth.user.username,
@@ -138,7 +138,7 @@
         })
       },
       updateData() {
-      axios.get(`http://localhost:3000/api/diveplaces/${this.$route.params.id}`)
+      axios.get(`api/diveplaces/${this.$route.params.id}`)
       .then((response) => {
         this.diveplace = response.data.foundDiveplace
       })

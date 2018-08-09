@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import Multibox from '@/components/Multibox'
 import Singlebox from '@/components/Singlebox'
 
@@ -62,7 +62,7 @@ import Singlebox from '@/components/Singlebox'
     Singlebox
   },
     asyncData() {
-      return axios.get('http://localhost:3000/api/diveplaces')
+      return axios.get('api/diveplaces')
       .then((response) => {
         return {
           diveplaces: response.data.foundDiveplace

@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 
   export default {
     middleware: 'isAdmin',
     layout: 'admin',
      asyncData() {
-      return axios.get('http://localhost:3000/api/diveplaces')
+      return axios.get('api/diveplaces')
       .then((response) => {
         return {
           diveplaces: response.data.foundDiveplace,
@@ -29,9 +29,9 @@ import axios from 'axios'
     },
     methods: {
       unpublishDiveplace(diveplace){
-        axios.post("http://localhost:3000/api/admin/diveplaces/unpublish", {id: diveplace})
+        axios.post("api/admin/diveplaces/unpublish", {id: diveplace})
         .then( (response) => {
-          axios.get("http://localhost:3000/api/diveplaces")
+          axios.get("api/diveplaces")
           .then((response)=> {
             this.diveplaces = response.data.foundDiveplace
           })

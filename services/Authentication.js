@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios from '@/plugins/axios'
 
 export default {
   login(email, password, callback) {
-    axios.post('http://localhost:3000/api/login', {
+    axios.post('api/login', {
         email: email,
         password: password
     })
@@ -29,7 +29,7 @@ export default {
   },
 
   register(email, password, username, callback) {
-    axios.post('http://localhost:3000/api/register', {
+    axios.post('api/register', {
       email: email,
       password: password,
       username: username

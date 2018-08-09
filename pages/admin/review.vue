@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 
   export default {
     middleware: 'isAdmin',
     layout: 'admin',
      asyncData() {
-      return axios.get('http://localhost:3000/api/admin/reviewdiveplaces')
+      return axios.get('api/admin/reviewdiveplaces')
       .then((response) => {
         return {
           diveplaces: response.data.foundDiveplaces,
@@ -36,18 +36,18 @@ import axios from 'axios'
     },
     methods: {
       acceptDiveplace(diveplace) {
-        axios.post('http://localhost:3000/api/admin/diveplaces/accept', {id: diveplace})
+        axios.post('api/admin/diveplaces/accept', {id: diveplace})
         .then((response) => {
-          axios.get("http://localhost:3000/api/admin/reviewdiveplaces")
+          axios.get("api/admin/reviewdiveplaces")
           .then((response)=> {
             this.diveplaces = response.data.foundDiveplaces
           })
         })
       },
       destroyDiveplace(diveplace) {
-        axios.post('http://localhost:3000/api/admin/diveplaces/delete',{id: diveplace})
+        axios.post('api/admin/diveplaces/delete',{id: diveplace})
         .then((response)=> {
-          axios.get("http://localhost:3000/api/admin/reviewdiveplaces")
+          axios.get("api/admin/reviewdiveplaces")
           .then((response)=> {
             this.diveplaces = response.data.foundDiveplaces
           })

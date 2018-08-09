@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import Auth from '@/services/Authentication'
 import Cookie from 'js-cookie'
 

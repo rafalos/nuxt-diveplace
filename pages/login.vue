@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import Cookie from 'js-cookie'
 import Auth from '@/services/Authentication'
 

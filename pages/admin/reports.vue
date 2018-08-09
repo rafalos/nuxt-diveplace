@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 
   export default {
     middleware: 'isAdmin',
     layout: 'admin',
     asyncData() {
-      return axios.get('http://localhost:3000/api/admin/reports')
+      return axios.get('api/admin/reports')
       .then((response) => {
         return {
           reports: response.data.foundReports

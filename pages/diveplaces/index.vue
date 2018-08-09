@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import Listitem from '@/components/diveplaces/Listitem'
 import Filterbox from '@/components/diveplaces/Filterbox'
 
@@ -33,7 +33,7 @@ import Filterbox from '@/components/diveplaces/Filterbox'
       }
     },
     asyncData() {
-      return axios.get('http://localhost:3000/api/diveplaces')
+      return axios.get('api/diveplaces')
       .then((response) => {
         return {
           diveplaces: response.data.foundDiveplace,
@@ -46,7 +46,7 @@ import Filterbox from '@/components/diveplaces/Filterbox'
     methods: {
       updateData(name, depth, sight) {
         this.loader = 1
-         axios.post('http://localhost:3000/api/diveplaces/search', 
+         axios.post('diveplaces/search', 
          {
            name: name,
            depth: depth,

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import Dropzone from 'nuxt-dropzone'
   export default {
     data() {
@@ -78,7 +78,7 @@ import Dropzone from 'nuxt-dropzone'
       uploadAvatar(file, event) {
         var formData = new FormData();
         formData.append('images', file);
-        axios.post(`http://localhost:3000/api/users/${this.$route.params.name}/avatar`, formData)
+        axios.post(`api/users/${this.$route.params.name}/avatar`, formData)
         .then((response) => {
           this.$store.dispatch('updateUser', response.data)
         })

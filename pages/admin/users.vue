@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
   export default {
     middleware: 'isAdmin',
     layout: 'admin',
     asyncData() {
-      return axios.get('http://localhost:3000/api/users')
+      return axios.get('api/users')
       .then((response) => {
         console.log(response)
         return {

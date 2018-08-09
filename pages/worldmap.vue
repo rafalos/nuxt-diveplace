@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 import googleMapStyle from '@/assets/google-map-style'
 
 export default {
     asyncData() {
-      return axios.get('http://localhost:3000/api/diveplaces')
+      return axios.get('api/diveplaces')
       .then((response) => {
         console.log(response)
         let tab=[]

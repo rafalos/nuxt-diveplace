@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/plugins/axios'
 export default {
   asyncData(context) {
-      return axios.get('http://localhost:3000/api/users/' + context.route.params.name)
+      return axios.get('api/users/' + context.route.params.name)
       .then((response) => {
         console.log(response.data)
         return {

@@ -99,7 +99,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import axios from '@/plugins/axios'
   import Dropzone from 'nuxt-dropzone'
   import 'nuxt-dropzone/dropzone.css'
   export default {
@@ -167,9 +167,9 @@
         for(let i=0; i<this.files.length; i++) {
           formData.append('images', this.files[i]);
         }
-        axios.post("/api/diveplaces", this.diveplace)
+        axios.post("api/diveplaces", this.diveplace)
         .then((response)=>{
-          axios.post(`/api/diveplaces/${response.data.createdDiveplace._id}/images`, formData)
+          axios.post(`api/diveplaces/${response.data.createdDiveplace._id}/images`, formData)
           .then( (response) => {
              this.infoMessage = "Diveplace submitted. Wait for review"
             console.log("photos created")
