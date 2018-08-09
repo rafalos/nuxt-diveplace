@@ -7,7 +7,6 @@ const port = process.env.PORT || 3000
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const Diveplace  = require("./models/Diveplace")
-const TempDiveplace = require("./models/TempDiveplace")
 const Comment = require("./models/Comment")
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
@@ -19,8 +18,17 @@ const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require("multer")
 const cors = require('cors')
 
+
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'diveplace.pl');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+}
+
 app.use(cors());
 app.options('*', cors());
+app.use(allowCrossDomain);
 
 
 cloudinary.config({
