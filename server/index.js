@@ -51,7 +51,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 //auth//
 app.post("/api/register", function(req, res, next) {
   if(!req.body.email || !req.body.password) {
-      res.json({
+      res.jsonp({
           success: false,
           message: "Please enter email and password"
       })
@@ -63,12 +63,12 @@ app.post("/api/register", function(req, res, next) {
       });
       newUser.save(function(err){
           if(err) {
-              return res.json({
+              return res.jsonp({
                   success: false,
                   message: "Email already exist! Try another one"
               })
           }
-          res.json({
+          res.jsonp({
               success: true,
               message: "Successfully created new user! Redirecting in 3 seconds"
           })
@@ -82,7 +82,7 @@ app.post("/api/login", function(req, res, next){
   }, function(err, user) {
       if (err) throw err
       if (!user) {
-          res.send({
+          res.jsonp({
               success: false,
               message: "That email was not found! Please register"
           })
@@ -92,13 +92,13 @@ app.post("/api/login", function(req, res, next){
                   var token = jwt.sign(user.toObject(), authCfg.secret, {
                       expiresIn: 10000 /// seconds
                   });
-                  res.json({
+                  res.jsonp({
                       success: true,
                       token: "JWT "+ token,
                       user: user
                   })
               } else {
-                  res.send({
+                  res.jsonp({
                       success: false,
                       message: "Auth failed, Passwords did not match"
                   })
@@ -115,7 +115,7 @@ app.get("/api/diveplaces", (req,res, next) => {
     if(err) {
       console.log(err)
     } else {
-      res.json({
+      res.jsonp({
          foundDiveplace
        });
     }
@@ -132,7 +132,7 @@ app.post("/api/diveplaces/search", (req,res, next) => {
         if(err) {
             console.log(err)
         } else {
-            res.json({
+            res.jsonp({
                 foundDiveplace
             })
         }
@@ -145,7 +145,7 @@ app.post("/api/diveplaces", (req, res, next) => {
         if(err) {
             console.log(err)
         } else {
-            res.json({
+            res.jsonp({
                 createdDiveplace
             })
         }
@@ -163,7 +163,7 @@ app.post("/api/diveplaces/:id/images", upload.array('images', 10) , (req, res, n
         } else {
             foundDiveplace.image = filenames
             foundDiveplace.save()
-            res.json({
+            res.jsonp({
                 foundDiveplace
             })
         }
@@ -176,7 +176,7 @@ app.get("/api/diveplaces/:id", (req,res, next) => {
     if(err) {
       console.log(err)
     } else {
-      res.json({
+      res.jsonp({
         foundDiveplace
       })
     }
@@ -190,7 +190,7 @@ app.get("/api/users/:username", (req,res, next) => {
         if(err){
             console.log(err);
         }else{
-            res.json({
+            res.jsonp({
                 foundUser
             })
         }
@@ -208,7 +208,7 @@ app.post("/api/users/:username/avatar", upload.array('images', 1), (req, res, ne
         } else {
             foundUser.avatar = filenames
             foundUser.save();
-            res.json({
+            res.jsonp({
                 user: foundUser
             })
         }
@@ -235,7 +235,7 @@ app.post("/api/diveplaces/:id/comment", function(req, res, next){
                 } else {
                     foundDiveplace.comments.push(comment)
                     foundDiveplace.save()
-                    res.json({
+                    res.jsonp({
                         comments: foundDiveplace.comments,
                         message: "Comment succesfully created"
                     })
@@ -255,7 +255,7 @@ app.get("/api/users", (req, res, next) => {
 		if(err) {
 			console.log(err)
 		} else {
-			res.json({
+			res.jsonp({
 				foundUsers
 			})
 		}
@@ -268,7 +268,7 @@ app.get("/api/admin/reviewdiveplaces", (req, res, next) => {
         if(err) {
             console.log(err)
         } else {
-            res.json({
+            res.jsonp({
                 foundDiveplaces
             })
         }
@@ -280,7 +280,7 @@ app.post("/api/admin/diveplaces/accept", (req, res, next) => {
         if(err) {
             console.log(err)
         } else {
-            res.json({
+            res.jsonp({
                 message: "Published succesfully"
             })
         }
@@ -292,7 +292,7 @@ app.post("/api/admin/diveplaces/unpublish", (req, res, next) => {
         if(err) {
             console.log(err)
         } else {
-            res.json({
+            res.jsonp({
                 message: "Unpublished succesfully"
             })
         }
@@ -305,7 +305,7 @@ app.post("/api/admin/diveplaces/delete", (req, res, next) => {
         if(err) {
             console.log(err)
         } else {
-            res.json({
+            res.jsonp({
                 message: "Deleted succesfully"
             })
         }
@@ -317,7 +317,7 @@ app.post("/api/diveplaces/:id/report", (req, res, next) => {
        if(err) {
            console.log(err)
        } else {
-           res.json({
+           res.jsonp({
                message: "Report submitted"
            })
        }
@@ -329,7 +329,7 @@ app.get("/api/admin/reports", (req,res, next) => {
         if(err) {
             console.log(err)
         } else {
-            res.json({
+            res.jsonp({
                 foundReports
             })
         }
