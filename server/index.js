@@ -17,6 +17,10 @@ const authCfg = require('./config/config.js')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require("multer")
+const cors = require('cors')
+
+app.use(cors());
+app.options('*', cors());
 
 
 cloudinary.config({
