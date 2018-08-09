@@ -16,12 +16,15 @@ const authCfg = require('./config/config.js')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require("multer")
+const cors = require('cors')
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+app.use(cors({
+    'allowedHeaders': ['sessionId', 'Content-Type'],
+    'exposedHeaders': ['sessionId'],
+    'origin': '*',
+    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'preflightContinue': false
+  }));
 
 
 cloudinary.config({
