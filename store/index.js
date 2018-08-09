@@ -18,6 +18,9 @@ const createStore = () => {
       }
     },
     actions: {
+      updateUser({commit}, data) {
+        commit('update', data)
+      },
       nuxtServerInit ({ commit }, { req }) {
         let accessToken = null
         if (req.headers.cookie) {

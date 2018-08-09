@@ -86,12 +86,15 @@
 
 
     <div v-show="step==4" class="whiteContainer" >
-      {{diveplace.images}}
       <h3 class="text-center">4. Upload images of your diveplace</h3>
       <dropzone id="foo" ref="el" :options="options" :destroyDropzone="true" @vdropzone-files-added="processFiles($event)"></dropzone>
       <button @click="stepDown" class="stdbutton">Prev</button>
       <button @click="createDiveplace" class="stdbutton">Create</button>
     </div>
+      <div id="loading" v-if="loader==1">
+        <h1 class="text-center">{{infoMessage}}</h1>
+        <div class="loader"></div>
+      </div>
   </div>
 </template>
 
@@ -103,6 +106,8 @@
     middleware: "authenticated",
     data() {
       return {
+        infoMessage: '',
+        loader: 0,
         files: [],
         step: 1,
         progress: 0,
@@ -151,6 +156,9 @@
         this.progress-=25
       },
       createDiveplace() {
+        var vm = this;
+        this.infoMessage = "Creating diveplace in progress"
+        this.loader = 1;
         this.diveplace.lat = this.marker.lat
         this.diveplace.lng = this.marker.lng
         this.step=5;
@@ -163,7 +171,9 @@
         .then((response)=>{
           axios.post(`/api/diveplaces/${response.data.createdDiveplace._id}/images`, formData)
           .then( (response) => {
-          console.log(response)
+             this.infoMessage = "Diveplace submitted. Wait for review"
+            console.log("photos created")
+          vm.$router.push("/diveplaces")
         })
         })
 

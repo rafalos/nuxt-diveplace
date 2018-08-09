@@ -62,7 +62,7 @@ import Singlebox from '@/components/Singlebox'
     Singlebox
   },
     asyncData() {
-      return axios.get('http://diveplace.herokuapp.com/api/diveplaces')
+      return axios.get('http://localhost:3000/api/diveplaces')
       .then((response) => {
         return {
           diveplaces: response.data.foundDiveplace

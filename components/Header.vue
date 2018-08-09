@@ -9,12 +9,15 @@
         <nuxt-link to="/login"><h4>Login</h4></nuxt-link>
         <nuxt-link to="/register"><h4>Register</h4></nuxt-link>
       </b-nav-item-dropdown>
-       <b-nav-item-dropdown v-else right :text="fetchUser.username" style="text-center">
+      <div v-else>
+      <img class="img img-responsive avatar float-right" :src="`http://res.cloudinary.com/hoahkzu0h/${fetchUser.avatar[0]}`"> 
+        <b-nav-item-dropdown right :text="fetchUser.username" style="text: center; display: inline-block;">
         <nuxt-link :to="'/users/' + fetchUser.username"><h4>My profile</h4></nuxt-link>
         <nuxt-link :to="'/users/' + fetchUser.username +'/edit'"><h4>Settings</h4></nuxt-link>
         <nuxt-link to='/admin' v-if="fetchUser.admin"><h4>Admin</h4></nuxt-link>
         <h4 @click="logout" style="cursor: pointer">Logout</h4>
       </b-nav-item-dropdown>
+      </div>
     </b-navbar-nav>
   </b-collapse>
 </b-navbar>
@@ -54,4 +57,12 @@
   font-size: 20px;
   font-weight: bold;
   }
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: block;
+}
+
 </style>

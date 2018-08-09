@@ -45,7 +45,6 @@ import Filterbox from '@/components/diveplaces/Filterbox'
     },
     methods: {
       updateData(name, depth, sight) {
-        console.log(name + " " + depth + " " + sight)
         this.loader = 1
          axios.post('http://localhost:3000/api/diveplaces/search', 
          {

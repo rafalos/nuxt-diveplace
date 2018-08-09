@@ -158,6 +158,9 @@ app.post("/api/diveplaces/:id/images", upload.array('images', 10) , (req, res) =
         } else {
             foundDiveplace.image = filenames
             foundDiveplace.save()
+            res.json({
+                foundDiveplace
+            })
         }
     })
 })
@@ -176,7 +179,7 @@ app.get("/api/diveplaces/:id", (req,res) => {
 })
 
 
-app.get("/api/users/:username", function(req,res){
+app.get("/api/users/:username", (req,res) => {
     var data = req.params.username;
     User.findOne({username: data}, function(err, foundUser){
         if(err){
@@ -189,6 +192,23 @@ app.get("/api/users/:username", function(req,res){
     })
 })
 
+app.post("/api/users/:username/avatar", upload.array('images', 1), (req, res) => {
+    let filenames = []
+    req.files.forEach(function(file){
+        filenames.push(file.public_id)
+    })
+    User.findOne({username: req.params.username}, (err, foundUser) => {
+        if(err) {
+            console.log(err)
+        } else {
+            foundUser.avatar = filenames
+            foundUser.save();
+            res.json({
+                user: foundUser
+            })
+        }
+    })
+})
 
 
 /////////////COMMENT//////////////

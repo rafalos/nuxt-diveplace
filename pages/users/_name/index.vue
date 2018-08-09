@@ -2,7 +2,7 @@
 <div class="container">
   <div class="whiteContainer">
     <h1 class="text-center">Public profile of {{user.username}}</h1>
-    <img id="userAvatar" class="img img-responsive" src="http://fuuse.net/wp-content/uploads/2016/02/avatar-placeholder.png">
+    <img id="userAvatar" class="img img-responsive" :src="`http://res.cloudinary.com/hoahkzu0h/${user.avatar[0]}`">
     <h3>First name: {{user.firstName}}</h3>
     <h3>Last name: {{user.lastName}}</h3>
     <h3>Certification number: {{user.certNumber}}</h3>
