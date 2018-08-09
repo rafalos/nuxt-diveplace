@@ -16,19 +16,12 @@ const authCfg = require('./config/config.js')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require("multer")
-const cors = require('cors')
 
-
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://www.diveplace.pl');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-}
-
-app.use(cors());
-app.options('*', cors());
-app.use(allowCrossDomain);
+  });
 
 
 cloudinary.config({
@@ -56,7 +49,7 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 //auth//
-app.post("/api/register", function(req, res) {
+app.post("/api/register", function(req, res, next) {
   if(!req.body.email || !req.body.password) {
       res.json({
           success: false,
@@ -83,7 +76,7 @@ app.post("/api/register", function(req, res) {
   }
 })
 
-app.post("/api/login", function(req, res){
+app.post("/api/login", function(req, res, next){
   User.findOne({
       email: req.body.email
   }, function(err, user) {
@@ -117,7 +110,7 @@ app.post("/api/login", function(req, res){
 
 ////////////////////////////////////////////////
 
-app.get("/api/diveplaces", (req,res) => {
+app.get("/api/diveplaces", (req,res, next) => {
   Diveplace.find({published: true}, (err,foundDiveplace) => {
     if(err) {
       console.log(err)
@@ -129,7 +122,7 @@ app.get("/api/diveplaces", (req,res) => {
   })
 })
 
-app.post("/api/diveplaces/search", (req,res) => {
+app.post("/api/diveplaces/search", (req,res, next) => {
     Diveplace.find({
         "published": "true",
         "name": { $regex: req.body.name, $options: 'i' },
@@ -146,7 +139,7 @@ app.post("/api/diveplaces/search", (req,res) => {
     })
 })
 
-app.post("/api/diveplaces", (req, res) => {
+app.post("/api/diveplaces", (req, res, next) => {
     console.log(req.body)
     Diveplace.create(req.body.diveplace, (err, createdDiveplace) => {
         if(err) {
@@ -159,7 +152,7 @@ app.post("/api/diveplaces", (req, res) => {
     })
 })
 
-app.post("/api/diveplaces/:id/images", upload.array('images', 10) , (req, res) =>  {
+app.post("/api/diveplaces/:id/images", upload.array('images', 10) , (req, res, next) =>  {
     let filenames = []
     req.files.forEach(function(file){
         filenames.push(file.public_id)
@@ -178,7 +171,7 @@ app.post("/api/diveplaces/:id/images", upload.array('images', 10) , (req, res) =
 })
 
 
-app.get("/api/diveplaces/:id", (req,res) => {
+app.get("/api/diveplaces/:id", (req,res, next) => {
   Diveplace.findById(req.params.id).populate('comments').exec((err, foundDiveplace) => {
     if(err) {
       console.log(err)
@@ -191,7 +184,7 @@ app.get("/api/diveplaces/:id", (req,res) => {
 })
 
 
-app.get("/api/users/:username", (req,res) => {
+app.get("/api/users/:username", (req,res, next) => {
     var data = req.params.username;
     User.findOne({username: data}, function(err, foundUser){
         if(err){
@@ -204,7 +197,7 @@ app.get("/api/users/:username", (req,res) => {
     })
 })
 
-app.post("/api/users/:username/avatar", upload.array('images', 1), (req, res) => {
+app.post("/api/users/:username/avatar", upload.array('images', 1), (req, res, next) => {
     let filenames = []
     req.files.forEach(function(file){
         filenames.push(file.public_id)
@@ -224,7 +217,7 @@ app.post("/api/users/:username/avatar", upload.array('images', 1), (req, res) =>
 
 
 /////////////COMMENT//////////////
-app.post("/api/diveplaces/:id/comment", function(req, res){
+app.post("/api/diveplaces/:id/comment", function(req, res, next){
     var d = new Date()
     var date = d.toLocaleDateString();
     let comment = {
@@ -257,7 +250,7 @@ app.post("/api/diveplaces/:id/comment", function(req, res){
 
 
 ////////////////////ADMIN////////////////
-app.get("/api/users", (req, res) => {
+app.get("/api/users", (req, res, next) => {
 	User.find({}, (err, foundUsers) => {
 		if(err) {
 			console.log(err)
@@ -270,7 +263,7 @@ app.get("/api/users", (req, res) => {
 })
 
 
-app.get("/api/admin/reviewdiveplaces", (req, res) => {
+app.get("/api/admin/reviewdiveplaces", (req, res, next) => {
     Diveplace.find({published: false}, (err, foundDiveplaces) => {
         if(err) {
             console.log(err)
@@ -282,7 +275,7 @@ app.get("/api/admin/reviewdiveplaces", (req, res) => {
     })
 })
 
-app.post("/api/admin/diveplaces/accept", (req, res) => {
+app.post("/api/admin/diveplaces/accept", (req, res, next) => {
     Diveplace.findByIdAndUpdate(req.body.id, {published:true}, (err, updatedDiveplace) => {
         if(err) {
             console.log(err)
@@ -294,7 +287,7 @@ app.post("/api/admin/diveplaces/accept", (req, res) => {
     })
 })
 
-app.post("/api/admin/diveplaces/unpublish", (req, res) => {
+app.post("/api/admin/diveplaces/unpublish", (req, res, next) => {
     Diveplace.findByIdAndUpdate(req.body.id, {published:false}, (err, updatedDiveplace) => {
         if(err) {
             console.log(err)
@@ -307,7 +300,7 @@ app.post("/api/admin/diveplaces/unpublish", (req, res) => {
 })
 
 
-app.post("/api/admin/diveplaces/delete", (req, res) => {
+app.post("/api/admin/diveplaces/delete", (req, res, next) => {
     Diveplace.findByIdAndRemove(req.body.id, (err, deletedDiveplace) => {
         if(err) {
             console.log(err)
@@ -319,7 +312,7 @@ app.post("/api/admin/diveplaces/delete", (req, res) => {
     })
 })
 
-app.post("/api/diveplaces/:id/report", (req, res) => {
+app.post("/api/diveplaces/:id/report", (req, res, next) => {
    Report.create(req.body, (err, createdReport) => {
        if(err) {
            console.log(err)
@@ -331,7 +324,7 @@ app.post("/api/diveplaces/:id/report", (req, res) => {
    })
 })
 
-app.get("/api/admin/reports", (req,res) => {
+app.get("/api/admin/reports", (req,res, next) => {
     Report.find({}, (err, foundReports) => {
         if(err) {
             console.log(err)
