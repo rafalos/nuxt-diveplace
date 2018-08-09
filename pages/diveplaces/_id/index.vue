@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <modal name="report">
+      <modal name="report" v-if="this.$store.state.auth !== null">
         <div style="padding: 10px">
         <h3 class="text-center">Report {{diveplace.name}}</h3>
         <input type="text" :value="this.$store.state.auth.user.username" readonly>
