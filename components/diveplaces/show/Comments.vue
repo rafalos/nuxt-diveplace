@@ -40,7 +40,7 @@ import axios from 'axios'
     methods: {
       postComment(e) {
         e.preventDefault();
-        return axios.post('http://localhost:3000/api/diveplaces/' + this.$route.params.id + '/comment', {
+        return axios.post('api/diveplaces/' + this.$route.params.id + '/comment', {
           message: this.comment,
           user: this.fetchUser
         })

@@ -2,7 +2,7 @@
 <div class="gallery">
   <div class="img-c" @click="showImage($event)" v-for="image in images" :key="image">
   <div class="img-w">
-  <img :src="`http://res.cloudinary.com/hoahkzu0h/${image}`">
+    <img :src="`http://res.cloudinary.com/hoahkzu0h/${image}`">
   </div>
   </div>   
 </div>
