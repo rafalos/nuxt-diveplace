@@ -4,7 +4,7 @@ const webpack = require('webpack')
 module.exports = {
   mode: 'universal',
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+    baseUrl: process.env.IP || 'http://localhost:3000'
   },
   /*
   ** Headers of the page
