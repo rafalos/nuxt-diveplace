@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <GmapMap
     :center="center"
     :zoom="6"
     ref="mapRef"
     map-type-id="terrain"
-    style="width: 100%; height: 700px"
+    style="width: 100%; height: 800px"
     :options="{styles: styles}"
     >
     <GmapInfoWindow :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">

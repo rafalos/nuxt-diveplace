@@ -1,12 +1,6 @@
 <template>
   <div id="main">
-    <Header/>
-    <div class="container" id="button-container" style="margin-top: 100px;">
-      <nuxt-link to="/"><button class="stdbutton"><i class="fas fa-home"></i> Home</button></nuxt-link>
-      <nuxt-link to="/diveplaces"><button class="stdbutton"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
-      <nuxt-link to="/worldmap"><button class="stdbutton"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
-      <nuxt-link v-if="this.$store.state.auth" to="/diveplaces/new"><button class="stdbutton"><i class="fas fa-plus"></i> New diveplace</button></nuxt-link>
-    </div>
+    <Header style='margin-bottom: 10px;'/>
     <nuxt/>
   </div>
 </template>
@@ -29,6 +23,9 @@ a {
   color: black;
 }
 
+body {
+  overflow: hidden;
+}
 
 html
 {
@@ -83,10 +80,9 @@ html
     position: fixed;
     top: 0;
     left: 0;
-    background-image: url(http://www.divingkarpathos.gr/wp-content/uploads/2013/05/bg23.jpg);
+    background-image: url('https://image.ibb.co/h4r8L9/bg.png');
     width: 100%;
     height: 100%;
-    opacity : 0.4;
     z-index: -1;
 }
 

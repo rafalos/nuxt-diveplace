@@ -1,7 +1,10 @@
 <template>
   <div>
-    <b-navbar class="fixed-top" toggleable="md" style="border-bottom: 2px solid #143D61; background:rgba(255,255,255, 0.4);">
-      <nuxt-link to="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="height: 60%; width: 60%;"></nuxt-link>
+    <b-navbar toggleable="md" style="background:rgba(255,255,255, 0.2);">
+      <nuxt-link to="/"><button class="whiteButton navBtn"><i class="fas fa-home"></i> Home</button></nuxt-link>
+      <nuxt-link to="/diveplaces"><button class="whiteButton navBtn"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
+      <nuxt-link to="worldmap"><button class="whiteButton navBtn"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
+      <nuxt-link v-if="$store.state.auth !== null" to="diveplaces/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New diveplace</button></nuxt-link>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse">
     <b-navbar-nav class="ml-auto">
@@ -51,11 +54,11 @@
 
 .navbar {
   padding: 3px;
+  height: 50px;
 }
 
 .navbar-nav li {
   font-size: 20px;
-  font-weight: bold;
   }
 
 .avatar {
@@ -63,6 +66,17 @@
   height: 50px;
   border-radius: 100%;
   display: block;
+}
+
+.navBtn {
+  margin-right: 3px;
+  border: none;
+  border-radius: 0px;
+  font-weight: normal;
+}
+
+.navBtn:hover {
+  border-bottom: 3px solid white;
 }
 
 </style>

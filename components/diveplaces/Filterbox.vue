@@ -1,24 +1,19 @@
 <template>
   <div class="filter-container">
-    <div class="form-group">
-      <label for="name">Name</label>
+    <div class="form-row">
+    <div class="form-group col-lg-4">
       <p>{{ searchIndicator }}</p>
-      <input name="name" v-model="name" type="text" id="search-bar" class="form-control" autocomplete="off">
+      <input name="name" v-model="name" type="text" id="search-bar" class="form-control input-line" placeholder="name" autocomplete="off">
 		</div>
-    <div class="form-group">
+    <div class="form-group col-lg-4">
       <label for="depth">Max. depth: <span id="depthValue">{{depth}}</span> m</label>
       <input name="depth" v-model="depth" type="range" min="1" max="150" style="width: 100%">
 		</div>
-    <div class="form-group">
+    <div class="form-group col-lg-4">
       <label for="sight">Max. sight: <span id="sightValue">{{sight}}</span> m</label>
       <input name="sight" v-model="sight" class="slideRange" id="sightSlider" type="range" min="1" max="100" step="1" value="20" style="width: 100%">
 		</div>
-    <div class="form-group">
-      <label for="country">Country</label>
-      <select v-model="country" name="country" class="form-control input-field" id="countryField">
-        <option>test</option>
-      </select>
-		</div>
+    </div>
   </div>
 </template>
 
@@ -74,9 +69,8 @@
 <style scoped>
 .filter-container {
   font-family: Roboto;
-  background: #143D61; 
+  background: none;
   color: white; 
-  padding: 10px; 
 }
 
 #submit-button {

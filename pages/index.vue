@@ -1,106 +1,36 @@
 <template>
-<div class="container">
-  <div class="whiteContainer">
-    <div class="row">
-      <div class="col-lg-3" style="border-right: 1px solid lightgrey; background: #143D61; color: white; padding: 10px;">
-        <h3 class="text-center">Featured diveplace</h3>
-        <Singlebox :contents="getRandomDiveplace" />
-      </div>
-      <div class="col-lg-9" style="padding: 10px;">
-       <h3> {{ diveplaces.length }} diveplaces wait for you to <nuxt-link to="/diveplaces">explore!</nuxt-link> </h3>
-       <hr>
-       <h3>Most recently added diveplaces:</h3>
-         <Multibox :contents="getRandomDiveplaces"/>
-       <hr>
-       <h3>Trending now</h3>
-      <div>
-    <b-carousel id="carousel1"
-      style="text-shadow: 1px 1px 2px #333;"
-      controls
-      indicators
-      background="#ababab"
-      :interval="4000"
-      img-width="300"
-      img-height="150"
-      v-model="slide"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-      >
-
-      <nuxt-link :to="'/diveplaces/' + diveplace._id" v-for="diveplace in getRandomDiveplaces" :key="diveplace._id" >
-        <b-carousel-slide
-        class="slideImg"
-        :caption="diveplace.name"
-        :text="diveplace.country"
-        :img-src="'http://res.cloudinary.com/hoahkzu0h/' + diveplace.image[0]">
-        </b-carousel-slide>
-      </nuxt-link>
-    </b-carousel>
-
+<div>
+  <div class="row" style="color: white">
+  <div class="col-lg-6">
+    
   </div>
-      </div>  
+    <div class="col-lg-6" style="padding-top: 100px;">
+      <img src="@/static/map.png" class="img img-responsive" style="width: 70%; margin-bottom: 50px;">
+      <h1>Discover thousands of diving places around.</h1>
+      <h2>Explore the world with <b>diveplace!</b></h2>
+      <nuxt-link to="/register"><button style="margin-top: 10px;" class="whiteButton">Join us</button></nuxt-link>
+      <nuxt-link to="/diveplaces"><button style="margin-top: 10px;" class="whiteButton">Explore now</button></nuxt-link>
     </div>
   </div>
+  
 </div>
+
+
 </template>
 
 <script>
-import axios from '@/plugins/axios'
-import Multibox from '@/components/Multibox'
-import Singlebox from '@/components/Singlebox'
-
 
   export default {
-    data () {
-    return {
-      slide: 0,
-      sliding: null
-    }
-  },
-  components: {
-    Multibox,
-    Singlebox
-  },
-    asyncData() {
-      return axios.get('api/diveplaces')
-      .then((response) => {
-        return {
-          diveplaces: response.data.foundDiveplace
-        }
-      })
-      .catch(function(error){
-        console.log(error)
-      })
-    },
-    computed: {
-      getRandomDiveplace() {
-        return this.diveplaces[Math.floor(Math.random() * this.diveplaces.length)]
-      },
-      getRandomDiveplaces() {
-        return this.diveplaces.slice(0,4)
-      }
-    },
-    methods: {
-
-      onSlideStart(slide) {
-        this.sliding = true
-      },
-      onSlideEnd(slide) {
-        this.sliding = false
-      }
-    }
+    layout: "blank"
   }
 </script>
 
 <style scoped>
+  #main:after {
+    background-image: url('https://image.ibb.co/kjAucp/pexels_photo_137612.jpg');
+  }
 
-.slideImg {
-  width: 100%;
-  height: 210px;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
+  .whiteButton {
+    font-size: 21px;
+  }
 </style>
