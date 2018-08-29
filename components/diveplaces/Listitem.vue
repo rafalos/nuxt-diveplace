@@ -1,5 +1,4 @@
 <template>
-  <nuxt-link :to="'/diveplaces/' + diveplace._id">
 		<div class="row diveplace-column">
       <div class="image col-md-12 content-column" style="padding:0">
         <img class="img img-responsive" :src="'http://res.cloudinary.com/hoahkzu0h/' + diveplace.image[0]" onerror="this.src='/img/nophoto.png';" >
@@ -9,7 +8,6 @@
       </div>
       	
 		</div>
-	</nuxt-link>
 </template>
 
 <script>

@@ -7,7 +7,7 @@
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse">
     <b-navbar-nav class="ml-auto">
-    <nuxt-link to="/register" v-if="this.$store.state.auth == null"><button class="whiteButton navBtn"><i class="fas fa-user-circle"></i> Account</button></nuxt-link>
+    <nuxt-link to="/account" v-if="this.$store.state.auth == null"><button class="whiteButton navBtn"><i class="fas fa-user-circle"></i> Account</button></nuxt-link>
 
       <div v-else>
       <img class="img img-responsive avatar float-right" :src="`http://res.cloudinary.com/hoahkzu0h/${fetchUser.avatar[0]}`"> 
@@ -50,7 +50,7 @@
 }
 
 .navbar {
-  padding: 3px;
+  padding: 0;
   height: 50px;
 }
 
@@ -66,14 +66,10 @@
 }
 
 .navBtn {
-  margin-right: 3px;
+  margin: 0;
   border: none;
   border-radius: 0px;
   font-weight: normal;
-}
-
-.navBtn:hover {
-  border-bottom: 3px solid white;
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-  <div class="row" style="padding-top: 80px;">
-    <div class="col-lg-6" style="border-right: 1px solid white;">
+  <div class="row" style="padding-top: 80px; ">
+    <div class="col-lg-6" style="border-right: 1px solid white; ">
       <div class="contentBox">
         <h1 class="text-center">Log in</h1>
           <h5 style="font-style: italic">By signing up u agree to our Terms & conditions</h5>

@@ -16,10 +16,15 @@
         <div v-else-if="diveplaces.length==0">
           <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
         </div>
-        <Listitem v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace"/>
+        <Listitem v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace)"/>
       </div>  
       <div class="col-lg-9">
-         <GmapMap
+      <div class="desc" v-if="descOpen" style="background: white; height: 800px; color: black;">
+        <button class="btn btn-danger" @click="closeDescription">X</button>
+        <h1>{{descDiveplace.name}}</h1>
+      </div>
+      <div id="gmap" v-if="mapOpen">
+    <GmapMap
     :center="center"
     :zoom="6"
     ref="mapRef"
@@ -43,6 +48,7 @@
     />
     </GmapMap>   
     </div>
+    </div>
       </div>
   </div>
 </template>
@@ -56,6 +62,9 @@ import googleMapStyle from '@/assets/google-map-style'
   export default {
     data() {
       return {
+        descOpen: false,
+        descDiveplace: null,
+        mapOpen: true,
         showDiveplaces: 1,
         loader: 0,
         search: '',
@@ -105,6 +114,16 @@ import googleMapStyle from '@/assets/google-map-style'
       })
     },
     methods: {
+      toggleDescription(diveplace) {
+        this.mapOpen = false
+        this.descOpen = true
+        console.log(diveplace)
+        this.descDiveplace = diveplace
+      },
+      closeDescription() {
+        this.mapOpen = true
+        this.descOpen = false
+      },
       updateData(name, depth, sight) {
         this.loader = 1
          axios.post('api/diveplaces/search', 
@@ -147,7 +166,10 @@ import googleMapStyle from '@/assets/google-map-style'
       Filterbox
     },
     mounted() {
-    this.$refs.mapRef.$forceUpdate()
+    if(this.mapOpen){
+      this.$refs.mapRef.$forceUpdate()
+    }
+    
    }
   }
 </script>
