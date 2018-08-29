@@ -2,7 +2,7 @@
  <div class="container-fluid">
    <div class="row">
      <div class="col-lg-3" style="padding-top: 12px;">
-        <h3 class="text-center" style="color: white;">Found {{diveplaces.length}} diveplaces</h3>
+        <h2 class="text-center" style="color: white; padding: 0; margin: 0;"><i class="fas fa-level-up-alt fa-rotate-180"></i> Found {{diveplaces.length}} diveplaces</h2>
      </div>
      <div class="col-lg-9">
         <Filterbox style="margin-left: 5px;" @filterChanged="updateData"/>

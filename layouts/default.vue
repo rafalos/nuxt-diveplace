@@ -80,7 +80,7 @@ html
     position: fixed;
     top: 0;
     left: 0;
-    background-image: url('https://image.ibb.co/h4r8L9/bg.png');
+    background-image: url('https://image.ibb.co/kjAucp/pexels_photo_137612.jpg');
     width: 100%;
     height: 100%;
     z-index: -1;
