@@ -19,9 +19,16 @@
         <Listitem v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace)"/>
       </div>  
       <div class="col-lg-9">
-      <div class="desc" v-if="descOpen" style="background: white; height: 800px; color: black;">
-        <button class="btn btn-danger" @click="closeDescription">X</button>
-        <h1>{{descDiveplace.name}}</h1>
+      <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.2); height: 800px; color: white; border-radius: 25px; padding: 10px;">
+        <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i>
+        <h1 class="text-center">{{descDiveplace.name}}</h1>
+        <h1 class="text-center"><i class="fas fa-heart"></i> <i class="fas fa-thumbtack"></i><i class="fas fa-exclamation-circle"></i></h1>
+      <button class="whiteButton descButton" style="border-radius: 25px 0px 0px 25px">Description</button>
+      <button class="whiteButton descButton">Gallery</button>
+      <button class="whiteButton descButton" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments</button>
+
+        <Gallery :images="descDiveplace.image"/>
+
       </div>
       <div id="gmap" v-if="mapOpen">
     <GmapMap
@@ -58,6 +65,7 @@ import axios from '@/plugins/axios'
 import Listitem from '@/components/diveplaces/Listitem'
 import Filterbox from '@/components/diveplaces/Filterbox'
 import googleMapStyle from '@/assets/google-map-style'
+import Gallery from '@/components/diveplaces/show/Gallery'
 
   export default {
     data() {
@@ -163,7 +171,8 @@ import googleMapStyle from '@/assets/google-map-style'
     },
     components: {
       Listitem,
-      Filterbox
+      Filterbox,
+      Gallery
     },
     mounted() {
     if(this.mapOpen){
@@ -185,6 +194,21 @@ import googleMapStyle from '@/assets/google-map-style'
   .sticky {
     height:800px;
     overflow-y: scroll;
+  }
+  
+  .fas {
+    margin-right: 20px;
+    cursor: pointer;
+  }
 
-}
+  .fas:hover {
+    border-bottom: 4px solid white;
+  }
+
+  .descButton {
+    border-right: none;
+    border-radius: 0;
+    width: 33.3%;
+    margin: 0;
+  }
 </style>
