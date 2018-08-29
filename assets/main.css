@@ -49,12 +49,13 @@
     padding: 0px 13px 0px 13px;
     width: 100%;
     font-family: "Roboto";
-    background:rgba(255,255,255, 0.9);
+    background: rgba(172, 178, 212, 0.74);
     margin: 20px 0 20px 0;
     font-weight: bold;
     -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
     -moz-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
     box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+    border-radius: 25px;
   }
 
   .input-line:focus {
@@ -88,6 +89,9 @@
 }
 
   .input-line {
+    margin-bottom: 5px;
+    padding: 5px;
+    padding-left: 15px;
     outline: none;
     width: 100%;
     border: none;

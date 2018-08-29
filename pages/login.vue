@@ -8,7 +8,7 @@
       <input type="password" @keydown.enter="login" class="input-line" id="validationServer02" placeholder="Password" required v-model="credientals.password">
     </div>
   </div>
-  <button class="stdbutton" @click="login">Login</button>
+  <button class="whiteButton" @click="login">Login</button>
     <div v-if="notification.visible==1" class="alert alert-danger">
         {{notification.message}}
     </div>

@@ -163,6 +163,6 @@ import googleMapStyle from '@/assets/google-map-style'
   .sticky {
     height:800px;
     overflow-y: scroll;
-    direction: rtl;
+
 }
 </style>

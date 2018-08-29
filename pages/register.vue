@@ -21,7 +21,7 @@
       </label>
     </div>
   </div>
-  <button class="stdbutton" @click="register">Register</button>
+  <button class="whiteButton" @click="register">Register</button>
     <div v-if="notification.visible==1" class="alert alert-danger">
         {{notification.message}}
     </div>
