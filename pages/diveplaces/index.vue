@@ -19,24 +19,22 @@
         <Listitem class="listItem" v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace._id)"/>
       </div>  
       <div class="col-lg-9">
-      <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.2); height: 800px; color: white; border-radius: 25px; padding: 10px;">
+      <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.17); height: 800px; color: white; border-radius: 25px; padding: 10px;">
         <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i>
         <h1 class="text-center">{{descDiveplace.name}}</h1>
         <h2 class="text-center"><i class="fas fa-heart"></i> <i class="fas fa-thumbtack"></i><i class="fas fa-exclamation-circle"></i></h2>
       <button class="whiteButton descButton" @click="descMode=1" :class="{'descButtonActive':descMode==1}" style="border-radius: 25px 0px 0px 25px">Description</button>
       <button class="whiteButton descButton" @click="descMode=2" :class="{'descButtonActive':descMode==2}" >Gallery ({{descDiveplace.image.length}}) </button>
       <button class="whiteButton descButton" @click="descMode=3" :class="{'descButtonActive':descMode==3}" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments ({{descDiveplace.comments.length}}) </button>
-      <div id="descBox" class="detailsBox" v-if="descMode==1">
+      <div id="descBox" class="detailsBox sticky" v-if="descMode==1">
         <p>{{descDiveplace.description}}</p>
       </div>
-       <div id="galleryBox" class="detailsBox" v-if="descMode==2">
+       <div id="galleryBox" class="detailsBox sticky" v-if="descMode==2">
         <Gallery :images="descDiveplace.image"/>
       </div>
-       <div id="commentBox" class="detailsBox" v-if="descMode==3">
-        <h1>Comments</h1>
+       <div id="commentBox" class="detailsBox sticky" v-if="descMode==3">
         <Comments @commentAdded="updateSingleData" :diveplaceID="descDiveplace._id" :comments="descDiveplace.comments"/>
       </div>
-
       </div>
       <div id="gmap" v-if="mapOpen">
     <GmapMap
@@ -245,11 +243,14 @@ import Comments from '@/components/diveplaces/show/Comments'
   .detailsBox {
     color: black;
     background: white;
-    border-radius: 25px;
+    opacity: 0.9;
     height: 550px;;
     margin: 20px;
     padding: 30px;
-  }
+    -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+    -moz-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+    box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
+    }
 
   #descBox {
     font-size: 1.2em;

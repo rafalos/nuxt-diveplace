@@ -34,8 +34,8 @@
   overflow: hidden;
 }
 .img-c {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
   float: left;
   position: relative;
   overflow: hidden;
