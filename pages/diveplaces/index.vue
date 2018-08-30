@@ -16,18 +16,25 @@
         <div v-else-if="diveplaces.length==0">
           <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
         </div>
-        <Listitem v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace)"/>
+        <Listitem class="listItem" v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace)"/>
       </div>  
       <div class="col-lg-9">
       <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.2); height: 800px; color: white; border-radius: 25px; padding: 10px;">
         <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i>
         <h1 class="text-center">{{descDiveplace.name}}</h1>
-        <h1 class="text-center"><i class="fas fa-heart"></i> <i class="fas fa-thumbtack"></i><i class="fas fa-exclamation-circle"></i></h1>
-      <button class="whiteButton descButton" style="border-radius: 25px 0px 0px 25px">Description</button>
-      <button class="whiteButton descButton">Gallery</button>
-      <button class="whiteButton descButton" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments</button>
-
+        <h2 class="text-center"><i class="fas fa-heart"></i> <i class="fas fa-thumbtack"></i><i class="fas fa-exclamation-circle"></i></h2>
+      <button class="whiteButton descButton" @click="descMode=1" :class="{'descButtonActive':descMode==1}" style="border-radius: 25px 0px 0px 25px">Description</button>
+      <button class="whiteButton descButton" @click="descMode=2" :class="{'descButtonActive':descMode==2}" >Gallery</button>
+      <button class="whiteButton descButton" @click="descMode=3" :class="{'descButtonActive':descMode==3}" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments</button>
+      <div id="descBox" class="detailsBox" v-if="descMode==1">
+        <p>{{descDiveplace.description}}</p>
+      </div>
+       <div id="galleryBox" class="detailsBox" v-if="descMode==2">
         <Gallery :images="descDiveplace.image"/>
+      </div>
+       <div id="commentBox" class="detailsBox" v-if="descMode==3">
+        <h1>Comments</h1>
+      </div>
 
       </div>
       <div id="gmap" v-if="mapOpen">
@@ -66,10 +73,12 @@ import Listitem from '@/components/diveplaces/Listitem'
 import Filterbox from '@/components/diveplaces/Filterbox'
 import googleMapStyle from '@/assets/google-map-style'
 import Gallery from '@/components/diveplaces/show/Gallery'
+import Comments from '@/components/diveplaces/show/Comments'
 
   export default {
     data() {
       return {
+        descMode: 2,
         descOpen: false,
         descDiveplace: null,
         mapOpen: true,
@@ -123,6 +132,7 @@ import Gallery from '@/components/diveplaces/show/Gallery'
     },
     methods: {
       toggleDescription(diveplace) {
+        this.descMode = 2;
         this.mapOpen = false
         this.descOpen = true
         console.log(diveplace)
@@ -172,7 +182,8 @@ import Gallery from '@/components/diveplaces/show/Gallery'
     components: {
       Listitem,
       Filterbox,
-      Gallery
+      Gallery,
+      Comments
     },
     mounted() {
     if(this.mapOpen){
@@ -199,10 +210,11 @@ import Gallery from '@/components/diveplaces/show/Gallery'
   .fas {
     margin-right: 20px;
     cursor: pointer;
+    transition: 0.2s;
   }
 
   .fas:hover {
-    border-bottom: 4px solid white;
+    font-size: 1.1em;
   }
 
   .descButton {
@@ -210,5 +222,27 @@ import Gallery from '@/components/diveplaces/show/Gallery'
     border-radius: 0;
     width: 33.3%;
     margin: 0;
+  }
+
+  .descButtonActive {
+    background: white;
+    color: #283BED;
+  }
+
+  .detailsBox {
+    color: black;
+    background: white;
+    border-radius: 25px;
+    height: 550px;;
+    margin: 20px;
+    padding: 30px;
+  }
+
+  #descBox {
+    font-size: 1.2em;
+  }
+
+  .listItem:hover {
+    cursor: pointer
   }
 </style>
