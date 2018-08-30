@@ -8,7 +8,7 @@
       <img src="@/static/map.png" class="img img-responsive" style="width: 70%; margin-bottom: 50px;">
       <h1>Discover thousands of diving places around.</h1>
       <h2>Explore the world with <b>diveplace!</b></h2>
-      <nuxt-link to="/register"><button style="margin-top: 10px;" class="whiteButton">Join us</button></nuxt-link>
+      <nuxt-link to="/account"><button style="margin-top: 10px;" class="whiteButton">Join us</button></nuxt-link>
       <nuxt-link to="/diveplaces"><button style="margin-top: 10px;" class="whiteButton">Explore now</button></nuxt-link>
     </div>
   </div>
