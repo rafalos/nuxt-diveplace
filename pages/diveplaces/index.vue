@@ -16,7 +16,7 @@
         <div v-else-if="diveplaces.length==0">
           <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
         </div>
-        <Listitem class="listItem" v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace)"/>
+        <Listitem class="listItem" v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace._id)"/>
       </div>  
       <div class="col-lg-9">
       <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.2); height: 800px; color: white; border-radius: 25px; padding: 10px;">
@@ -24,8 +24,8 @@
         <h1 class="text-center">{{descDiveplace.name}}</h1>
         <h2 class="text-center"><i class="fas fa-heart"></i> <i class="fas fa-thumbtack"></i><i class="fas fa-exclamation-circle"></i></h2>
       <button class="whiteButton descButton" @click="descMode=1" :class="{'descButtonActive':descMode==1}" style="border-radius: 25px 0px 0px 25px">Description</button>
-      <button class="whiteButton descButton" @click="descMode=2" :class="{'descButtonActive':descMode==2}" >Gallery</button>
-      <button class="whiteButton descButton" @click="descMode=3" :class="{'descButtonActive':descMode==3}" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments</button>
+      <button class="whiteButton descButton" @click="descMode=2" :class="{'descButtonActive':descMode==2}" >Gallery ({{descDiveplace.image.length}}) </button>
+      <button class="whiteButton descButton" @click="descMode=3" :class="{'descButtonActive':descMode==3}" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments ({{descDiveplace.comments.length}}) </button>
       <div id="descBox" class="detailsBox" v-if="descMode==1">
         <p>{{descDiveplace.description}}</p>
       </div>
@@ -34,6 +34,7 @@
       </div>
        <div id="commentBox" class="detailsBox" v-if="descMode==3">
         <h1>Comments</h1>
+        <Comments @commentAdded="updateSingleData" :diveplaceID="descDiveplace._id" :comments="descDiveplace.comments"/>
       </div>
 
       </div>
@@ -47,7 +48,7 @@
     :options="{styles: styles}"
     >
     <GmapInfoWindow :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
-        <nuxt-link :to="'/diveplaces/' + infoContent.id">{{infoContent.title}}</nuxt-link>
+        <h6 style="cursor: pointer;" @click="toggleDescription(infoContent.id)" >{{infoContent.title}}</h6>
     </GmapInfoWindow>
 
     <GmapMarker
@@ -132,15 +133,27 @@ import Comments from '@/components/diveplaces/show/Comments'
     },
     methods: {
       toggleDescription(diveplace) {
+        axios.get(`api/diveplaces/${diveplace}`)
+      .then((response) => {
+        this.descDiveplace = response.data.foundDiveplace
         this.descMode = 2;
         this.mapOpen = false
         this.descOpen = true
-        console.log(diveplace)
-        this.descDiveplace = diveplace
+      })
+      .catch(function(error){
+        console.log(error)
+      })
+        
       },
       closeDescription() {
         this.mapOpen = true
         this.descOpen = false
+      },
+      updateSingleData() {
+      axios.get(`api/diveplaces/${this.$route.params.id}`)
+      .then((response) => {
+        this.diveplace = response.data.foundDiveplace
+      })
       },
       updateData(name, depth, sight) {
         this.loader = 1

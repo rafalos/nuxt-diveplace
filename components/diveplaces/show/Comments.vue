@@ -6,7 +6,7 @@
         <button class="stdbutton" @click="postComment">Add</button>
       </div>
       <div v-else>
-      <h3><nuxt-link to="/login">Login</nuxt-link> to comment</h3>
+      <h3><nuxt-link to="/account">Login</nuxt-link> to comment</h3>
       </div>
         <div style="padding: 15px;">
           <div class="row comment-box">
@@ -25,7 +25,7 @@
 <script>
 import axios from 'axios'
   export default {
-    props: ['comments'],
+    props: ['comments', 'diveplaceID'],
     data() {
       return {
         commentsRaw: this.comments,
@@ -39,12 +39,14 @@ import axios from 'axios'
     },
     methods: {
       postComment(e) {
+        console.log(this.diveplaceID)
         e.preventDefault();
-        return axios.post('api/diveplaces/' + this.$route.params.id + '/comment', {
+        return axios.post('api/diveplaces/' + this.diveplaceID + '/comment', {
           message: this.comment,
           user: this.fetchUser
         })
         .then((response) => {
+          console.log("emited")
         this.comment=''
         this.commentsRaw = response.data.comments
         this.$emit("commentAdded", response.data.comments)
@@ -68,10 +70,6 @@ import axios from 'axios'
     resize: none;
     font-weight: bold;
     padding: 5px;
-  }
-
-  .comment-box {
-    background: white;
   }
 </style>
 
