@@ -221,6 +221,7 @@ import Comments from '@/components/diveplaces/show/Comments'
   .sticky {
     height:800px;
     overflow-y: scroll;
+    overflow: scroll
   }
   
   .fas {
