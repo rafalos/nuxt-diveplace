@@ -16,7 +16,7 @@
         <div v-else-if="diveplaces.length==0">
           <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
         </div>
-        <Listitem class="listItem" v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace._id)"/>
+        <Listitem @mouseover.native="centerMap(diveplace.lat, diveplace.lng)" class="listItem" v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace._id)"/>
       </div>  
       <div class="col-lg-9">
       <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.17); height: 800px; color: white; border-radius: 25px; padding: 10px;">
@@ -130,6 +130,11 @@ import Comments from '@/components/diveplaces/show/Comments'
       })
     },
     methods: {
+      centerMap(lat, lng) {
+        this.$refs.mapRef.$mapPromise.then((map) => {
+        map.panTo({lat: lat, lng: lng})
+    })
+      },
       toggleDescription(diveplace) {
         axios.get(`api/diveplaces/${diveplace}`)
       .then((response) => {
