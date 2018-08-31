@@ -2,7 +2,7 @@
  <div class="container-fluid">
    <div class="row">
      <div class="col-lg-3" style="padding-top: 12px;">
-        <h2 class="text-center" style="color: white; padding: 0; margin: 0;"><i class="fas fa-level-up-alt fa-rotate-180"></i> Found {{diveplaces.length}} diveplaces</h2>
+        <h4 class="text-center" style="color: white; padding: 0; margin: 0;"><i class="fas fa-level-up-alt fa-rotate-180"></i> Found {{diveplaces.length}} diveplaces</h4>
      </div>
      <div class="col-lg-9">
         <Filterbox style="margin-left: 5px;" @filterChanged="updateData"/>
@@ -16,7 +16,7 @@
         <div v-else-if="diveplaces.length==0">
           <h3 class="whiteContainer">No diveplaces found matching your search criteria</h3>
         </div>
-        <Listitem @mouseover.native="centerMap(diveplace.lat, diveplace.lng)" class="listItem" v-else v-for="diveplace in diveplaces" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace._id)"/>
+        <Listitem class="listItem" v-else v-for="(diveplace, index) in diveplaces" @mouseover.native="centerMap(diveplace.lat, diveplace.lng, index)" @mouseleave.native="clearAnimation(diveplace.lat, diveplace.lng, index)" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace._id)"/>
       </div>  
       <div class="col-lg-9">
       <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.17); height: 800px; color: white; border-radius: 25px; padding: 10px;">
@@ -51,12 +51,13 @@
 
     <GmapMarker
     :key="index"
-    v-for="(m, index) in markers"
-    :position="m.position"
-    :title="m.title"
+    v-for="(m, index) in diveplaces"
+    :position="{lat: m.lat, lng: m.lng}"
+    :title="m.name"
     :clickable="true"
     :draggable="false"
     :icon="icon"
+    ref="markers"
     @click="toggleInfoWindow(m,index)"
     />
     </GmapMap>   
@@ -88,6 +89,11 @@ import Comments from '@/components/diveplaces/show/Comments'
         sight: 50,
         center: { lat: 52.237049, lng: 21.017532 },
       places: [],
+      icon2:{
+        url: 'http://www.clker.com/cliparts/J/U/K/G/l/9/google-maps-marker-for-residencelamontagne.svg.hi.png',
+        size: {width: 46, height: 46, f: 'px', b: 'px'},
+        scaledSize: {width: 30, height: 50, f: 'px', b: 'px'}
+      },
       icon: {
         url: 'https://image.ibb.co/eMmAWy/marker2.png',
         size: {width: 46, height: 46, f: 'px', b: 'px'},
@@ -130,10 +136,14 @@ import Comments from '@/components/diveplaces/show/Comments'
       })
     },
     methods: {
-      centerMap(lat, lng) {
+      centerMap(lat, lng, index) {
+        this.$refs.markers[index].$markerObject.setAnimation(google.maps.Animation.BOUNCE)
         this.$refs.mapRef.$mapPromise.then((map) => {
         map.panTo({lat: lat, lng: lng})
     })
+      },
+      clearAnimation(lat, lng, index) {
+        this.$refs.markers[index].$markerObject.setAnimation(null)
       },
       toggleDescription(diveplace) {
         axios.get(`api/diveplaces/${diveplace}`)
@@ -181,10 +191,10 @@ import Comments from '@/components/diveplaces/show/Comments'
         })
       },
       toggleInfoWindow(marker, idx) {
-    this.infoWindowPos = marker.position;
+    this.infoWindowPos = {lat: marker.lat, lng: marker.lng};
     this.infoContent = {
-      title: marker.title,
-      id: marker.id
+      title: marker.name,
+      id: marker._id
     }
     if (this.currentMidx == idx) {
       this.infoWinOpen = !this.infoWinOpen;
