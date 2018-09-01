@@ -51,13 +51,13 @@
   }
 
 .diveplace-column:hover {
-  opacity: 0.8;
+  opacity: 0.9;
   }
 
 .image {
-   position: relative;
    width: 100%;
    overflow: hidden;
+   height: 100%;
 }
 
 </style>

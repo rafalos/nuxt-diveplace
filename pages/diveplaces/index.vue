@@ -43,7 +43,10 @@
     ref="mapRef"
     map-type-id="terrain"
     style="width: 100%; height: 800px"
-    :options="{styles: styles}"
+    :options="{
+      styles: styles,
+      disableDefaultUI: true
+    }"
     >
     <GmapInfoWindow :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
         <h6 style="cursor: pointer;" @click="toggleDescription(infoContent.id)" >{{infoContent.title}}</h6>
@@ -89,11 +92,6 @@ import Comments from '@/components/diveplaces/show/Comments'
         sight: 50,
         center: { lat: 52.237049, lng: 21.017532 },
       places: [],
-      icon2:{
-        url: 'http://www.clker.com/cliparts/J/U/K/G/l/9/google-maps-marker-for-residencelamontagne.svg.hi.png',
-        size: {width: 46, height: 46, f: 'px', b: 'px'},
-        scaledSize: {width: 30, height: 50, f: 'px', b: 'px'}
-      },
       icon: {
         url: 'https://image.ibb.co/eMmAWy/marker2.png',
         size: {width: 46, height: 46, f: 'px', b: 'px'},
@@ -140,10 +138,15 @@ import Comments from '@/components/diveplaces/show/Comments'
         this.$refs.markers[index].$markerObject.setAnimation(google.maps.Animation.BOUNCE)
         this.$refs.mapRef.$mapPromise.then((map) => {
         map.panTo({lat: lat, lng: lng})
+        console.log("entered")
     })
       },
       clearAnimation(lat, lng, index) {
-        this.$refs.markers[index].$markerObject.setAnimation(null)
+        if(this.$refs.markers[index] !== index) {
+          this.$refs.markers[index].$markerObject.setAnimation(null)
+          console.log("left")  
+        }
+        
       },
       toggleDescription(diveplace) {
         axios.get(`api/diveplaces/${diveplace}`)
