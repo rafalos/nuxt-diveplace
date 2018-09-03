@@ -2,8 +2,8 @@
   <div>
     <b-navbar toggleable="md" style="background:rgba(255,255,255, 0.2);">
       <nuxt-link to="/diveplaces"><button class="whiteButton navBtn"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
-      <nuxt-link to="worldmap"><button class="whiteButton navBtn"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
-      <nuxt-link v-if="$store.state.auth !== null" to="diveplaces/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New diveplace</button></nuxt-link>
+      <nuxt-link to="/worldmap"><button class="whiteButton navBtn"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
+      <nuxt-link v-if="$store.state.auth !== null" to="/diveplaces/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New diveplace</button></nuxt-link>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse">
     <b-navbar-nav class="ml-auto">
@@ -61,7 +61,6 @@
 .avatar {
   width: 50px;
   height: 50px;
-  border-radius: 100%;
   display: block;
 }
 

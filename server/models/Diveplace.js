@@ -23,8 +23,8 @@ var diveplaceSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:"Comment"
     }],
-	watchersNumber: Number,
-	watchersNicknames: []
+    liked: [],
+    visited: []
 })
 
 module.exports = mongoose.model("Diveplace", diveplaceSchema);

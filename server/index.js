@@ -248,7 +248,29 @@ app.post("/api/diveplaces/:id/comment", function(req, res, next){
     })
 })
 
-
+/////////////////////////////////////
+app.post("/api/diveplaces/:id/like", function(req, res, next){
+    Diveplace.findById(req.params.id, (err, foundDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            if(foundDiveplace.liked.includes(req.body.username)){
+                res.json({
+                    success: false,
+                    message: "You already like it"
+                })
+            } else {
+                foundDiveplace.liked.push(req.body.username)
+                foundDiveplace.save()
+                res.json({
+                    success: true,
+                    diveplace: foundDiveplace
+                })
+            }
+            
+        }
+    })
+})
 
 
 

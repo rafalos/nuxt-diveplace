@@ -20,9 +20,9 @@
       </div>  
       <div class="col-lg-9">
       <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.17); height: 800px; color: white; border-radius: 25px; padding: 10px;">
-        <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i>
+        <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i><i class="float-right fas fa-exclamation-circle" @click="report(descDiveplace._id)"></i>
         <h1 class="text-center">{{descDiveplace.name}}</h1>
-        <h2 class="text-center"><i class="fas fa-heart"></i> <i class="fas fa-thumbtack"></i><i class="fas fa-exclamation-circle"></i></h2>
+        <h2 v-if="$store.state.auth !== null" class="text-center"><i class="fas fa-heart" @click="like(descDiveplace._id)"></i><span>{{descDiveplace.liked.length}}</span> <i class="fas fa-map-marker" @click="wasThere(descDiveplace._id)"></i><span>{{descDiveplace.visited.length}}</span></h2>
       <button class="whiteButton descButton" @click="descMode=1" :class="{'descButtonActive':descMode==1}" style="border-radius: 25px 0px 0px 25px">Description</button>
       <button class="whiteButton descButton" @click="descMode=2" :class="{'descButtonActive':descMode==2}" >Gallery ({{descDiveplace.image.length}}) </button>
       <button class="whiteButton descButton" @click="descMode=3" :class="{'descButtonActive':descMode==3}" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments ({{descDiveplace.comments.length}}) </button>
@@ -134,19 +134,42 @@ import Comments from '@/components/diveplaces/show/Comments'
       })
     },
     methods: {
+      like(diveplaceID){
+        let username = this.$store.state.auth.user.username
+        axios.post(`api/diveplaces/${diveplaceID}/like`, {
+          username: username
+        })
+        .then((response) => {
+          if(response.data.success){
+            console.log(response.data)
+            this.descDiveplace = response.data.diveplace
+          }
+          else {
+            alert(response.data.message)
+          }
+          
+        })
+      },
+      wasThere(diveplaceID) {
+        console.log(diveplaceID)
+      },
+      report(diveplaceID){
+        console.log(diveplaceID)
+      },
       centerMap(lat, lng, index) {
+        if(this.mapOpen){
         this.$refs.markers[index].$markerObject.setAnimation(google.maps.Animation.BOUNCE)
         this.$refs.mapRef.$mapPromise.then((map) => {
         map.panTo({lat: lat, lng: lng})
-        console.log("entered")
-    })
+          })
+        }
       },
       clearAnimation(lat, lng, index) {
+        if(this.mapOpen){
         if(this.$refs.markers[index] !== index) {
           this.$refs.markers[index].$markerObject.setAnimation(null)
-          console.log("left")  
         }
-        
+        }
       },
       toggleDescription(diveplace) {
         axios.get(`api/diveplaces/${diveplace}`)
@@ -224,6 +247,9 @@ import Comments from '@/components/diveplaces/show/Comments'
 </script>
 
 <style scoped>
+  span {
+    margin-right: 10px;
+  },
   #loading {
   margin-left: 100px;
   position: relative;
@@ -238,7 +264,7 @@ import Comments from '@/components/diveplaces/show/Comments'
   }
   
   .fas {
-    margin-right: 20px;
+    margin-right: 5px;
     cursor: pointer;
     transition: 0.2s;
   }
