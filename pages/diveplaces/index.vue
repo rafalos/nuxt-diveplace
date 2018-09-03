@@ -151,7 +151,20 @@ import Comments from '@/components/diveplaces/show/Comments'
         })
       },
       wasThere(diveplaceID) {
-        console.log(diveplaceID)
+        let username = this.$store.state.auth.user.username
+        axios.post(`api/diveplaces/${diveplaceID}/visited`, {
+          username: username
+        })
+        .then((response) => {
+          if(response.data.success){
+            console.log(response.data)
+            this.descDiveplace = response.data.diveplace
+          }
+          else {
+            alert(response.data.message)
+          }
+          
+        })
       },
       report(diveplaceID){
         console.log(diveplaceID)

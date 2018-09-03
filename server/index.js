@@ -193,9 +193,23 @@ app.get("/api/users/:username", (req,res, next) => {
         if(err){
             console.log(err);
         }else{
-            res.jsonp({
-                foundUser
-            })
+            Diveplace.find({liked: {"$in": [req.params.username]}}, function(err, foundLiked){
+                if(err) {
+                    console.log(err)}
+                     else {
+                         Diveplace.find({visited: {"$in": [req.params.username]}}, function(err, foundVisited){
+                             if(err) {
+                                 console.log(err)
+                             } else {
+                                res.json({
+                                    liked: foundLiked,
+                                    visited: foundVisited,
+                                    user: foundUser
+                                })
+                             }
+                         })
+                    }
+                })
         }
     })
 })
@@ -261,6 +275,29 @@ app.post("/api/diveplaces/:id/like", function(req, res, next){
                 })
             } else {
                 foundDiveplace.liked.push(req.body.username)
+                foundDiveplace.save()
+                res.json({
+                    success: true,
+                    diveplace: foundDiveplace
+                })
+            }
+            
+        }
+    })
+})
+
+app.post("/api/diveplaces/:id/visited", function(req, res, next){
+    Diveplace.findById(req.params.id, (err, foundDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            if(foundDiveplace.visited.includes(req.body.username)){
+                res.json({
+                    success: false,
+                    message: "You already marked this place as visited"
+                })
+            } else {
+                foundDiveplace.visited.push(req.body.username)
                 foundDiveplace.save()
                 res.json({
                     success: true,
