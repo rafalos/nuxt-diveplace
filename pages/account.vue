@@ -11,9 +11,9 @@
       <div class="row">
         <div class="col-lg-12" style="padding: 50px;" v-if="mode==1">
           <h1 class="text-center">Log in</h1>
-          <input type="text" class="input-line in"  placeholder="Username (lowercase, min. 5 chars)" required v-model="loginData.username">
+          <input type="text" class="input-line in"  placeholder="Email adress" required v-model="loginData.email">
           <input type="password" class="input-line in"  placeholder="Password" required v-model="loginData.password">
-          <button class="whiteButton logBtn" @click="login">Log In</button>
+          <button class="whiteButton logBtn" @click="login" @keydown.enter="login">Log In</button>
           <h5 style="font-style: italic">By signing up u agree to our Terms & conditions</h5>
         </div>
       <div class="col-lg-12" style="padding: 50px;" v-if="mode==2">
@@ -60,7 +60,7 @@ import Cookie from 'js-cookie'
       return {
         mode: 1,
         loginData: {
-          username: "",
+          email: "",
           password: ""
         },
         registerData: {
@@ -76,46 +76,28 @@ import Cookie from 'js-cookie'
     },
     methods: {
       register() {
-        this.notification.visible = 0;
-        let vm = this;
-        Auth.register(this.registerData.email,this.registerData.password, this.registerData.username, function(auth) {
-          if(auth.status == false){
-            console.log("false")
-          } else {
-            vm.notification.visible = 1;
-            vm.notification.message = auth.message
-            Auth.login(vm.registerData.email,vm.registerData.password, function(auth){
-          if(auth.status == false) {
-            conole.log("login failed")
-          } else {
-            setTimeout( () => {
-              vm.$store.commit('update', auth)
-              Cookie.set('auth', auth)
-              vm.$router.push({ path: '/diveplaces'})
-            }
-            ,3000);
-          } 
+        axios.post('api/register', {
+          email: this.registerData.email,
+          username: this.registerData.username,
+          password: this.registerData.password
+        }).then((response) => {
+          this.$store.dispatch("Authenticate", response.data.user)
+          this.$router.push('/diveplaces')
         })
-          }
-        })
-    },
+      },
     login() {
-      console.log("clicked")
-        this.notification.visibe = 0; 
-        var vm=this
-        Auth.login(this.loginData.username,this.loginData.password, function(auth){
-          if(auth.status == false) {
-            vm.notification.visible = 1
-            vm.notification.message = auth.message
-          } else {
-            vm.notification.visible = 1
-            vm.notification.message = "Successfully logged in. Wait for redirect"
-            vm.$store.commit('update', auth)
-            Cookie.set('auth', auth)
-            vm.$router.push('/diveplaces')
-          }
-          
-        })
+      axios.post('api/login', {
+        email: this.loginData.email,
+        password: this.loginData.password
+      }).then((response) => {
+        console.log(response.data)
+        if(response.data == false) {
+          console.log(response.data.message)
+        } else {
+          this.$store.dispatch("Authenticate", response.data.user)
+          this.$router.push('/diveplaces')
+        }
+      })
       }
       }
     }

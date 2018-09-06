@@ -1,36 +1,34 @@
 import Vuex from 'vuex'
-import Cookie from 'js-cookie'
-
-var cookieparser = require('cookieparser')
+import axios from 'axios'
 
 const createStore = () => {
   return new Vuex.Store({
     state: {
-      auth: null
+      authUser: null
     },
     mutations: {
-      update (state, data) {
-        state.auth = data
-      },
-      clearAuth() {
-        Cookie.remove('auth');
-        this.state.auth = null
+      SET_USER (state, data) {
+        state.authUser = data
       }
     },
     actions: {
-      updateUser({commit}, data) {
-        commit('update', data)
+      UpdateUserData({commit}, data){
+        commit('SET_USER', data)
+      },
+      Logout({commit}) {
+        axios.post('/api/logout')
+        .then((response) => {
+          commit('SET_USER', null)
+          Router.push('/diveplaces');
+        })
+      },
+      Authenticate({commit}, data) {
+        commit('SET_USER', data)
       },
       nuxtServerInit ({ commit }, { req }) {
-        let accessToken = null
-        if (req.headers.cookie) {
-          var parsed = cookieparser.parse(req.headers.cookie)
-          accessToken = JSON.parse(parsed.auth)
+        if (req.session && req.session.authUser) {
+          commit('SET_USER', req.session.authUser.user)
         }
-        commit('update', accessToken)
-      },
-      logout({commit}) {
-        commit('clearAuth')
       }
     }
   })

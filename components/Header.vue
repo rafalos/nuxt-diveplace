@@ -3,15 +3,14 @@
     <b-navbar toggleable="md" style="background:rgba(255,255,255, 0.2);">
       <nuxt-link to="/diveplaces"><button class="whiteButton navBtn"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
       <nuxt-link to="/worldmap"><button class="whiteButton navBtn"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
-      <nuxt-link v-if="$store.state.auth !== null" to="/diveplaces/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New diveplace</button></nuxt-link>
-      <nuxt-link v-if="$store.state.auth !== null" to="/logbook/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New logbook entry</button></nuxt-link>
+      <nuxt-link v-if="fetchUser !== null" to="/diveplaces/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New diveplace</button></nuxt-link>
+      <nuxt-link v-if="fetchUser !== null" to="/logbook/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New logbook entry</button></nuxt-link>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse">
     <b-navbar-nav class="ml-auto">
-    <nuxt-link to="/account" v-if="this.$store.state.auth == null"><button class="whiteButton navBtn"><i class="fas fa-user-circle"></i> Account</button></nuxt-link>
-
+    <nuxt-link to="/account" v-if="fetchUser == null"><button class="whiteButton navBtn"><i class="fas fa-user-circle"></i> Account</button></nuxt-link>
       <div v-else>
-      <img class="img img-responsive avatar float-right" :src="`http://res.cloudinary.com/hoahkzu0h/${fetchUser.avatar[0]}`"> 
+        <img class="img img-responsive avatar float-right" :src="`http://res.cloudinary.com/hoahkzu0h/${fetchUser.avatar[0]}`"> 
         <b-nav-item-dropdown right :text="fetchUser.username" style="text: center; display: inline-block;">
         <nuxt-link :to="'/users/' + fetchUser.username"><h4>My profile</h4></nuxt-link>
         <nuxt-link :to="'/users/' + fetchUser.username +'/edit'"><h4>Settings</h4></nuxt-link>
@@ -30,12 +29,13 @@
   export default {
     methods: {
       logout() {
-        this.$store.dispatch("logout")
+        this.$store.dispatch("Logout")
+        this.$router.push('/diveplaces')
       }
     },
     computed: {
       fetchUser() {
-        return this.$store.state.auth.user
+        return this.$store.state.authUser
       }
     }
   }

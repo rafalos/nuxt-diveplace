@@ -8,8 +8,6 @@ const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const Diveplace  = require("./models/Diveplace")
 const Comment = require("./models/Comment")
-const jwt = require('jsonwebtoken')
-const passport = require('passport')
 const User = require('./models/user')
 const Report = require('./models/Report')
 const authCfg = require('./config/config.js')
@@ -17,6 +15,7 @@ const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require("multer")
 const cors = require('cors')
+const session = require('express-session')
 
 app.use(cors({
     'allowedHeaders': ['sessionId', 'Content-Type'],
@@ -26,6 +25,12 @@ app.use(cors({
     'preflightContinue': false
   }));
 
+app.use(session({
+  secret: 'super-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 60000 }
+}))
 
 cloudinary.config({
     cloud_name: 'hoahkzu0h',
@@ -46,15 +51,13 @@ cloudinary.config({
 
 app.set('port', port)
 mongoose.connect('mongodb://rafalos:rafal1@ds161245.mlab.com:61245/diveplaces');
-app.use(passport.initialize())
-require("./config/passport.js")(passport)
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 //auth//
 app.post("/api/register", function(req, res, next) {
   if(!req.body.email || !req.body.password) {
-      res.jsonp({
+      res.json({
           success: false,
           message: "Please enter email and password"
       })
@@ -64,44 +67,40 @@ app.post("/api/register", function(req, res, next) {
           password: req.body.password,
           username: req.body.username
       });
-      newUser.save(function(err){
+      newUser.save(function(err, savedUser){
           if(err) {
-              return res.jsonp({
+              return res.json({
                   success: false,
                   message: "Email already exist! Try another one"
               })
           }
-          res.jsonp({
+          res.json({
               success: true,
-              message: "Successfully created new user! Redirecting in 3 seconds"
+              message: "Successfully created new user! Redirecting in 3 seconds",
+              user: savedUser
           })
       })
   }
 })
 
 app.post("/api/login", function(req, res, next){
+  console.log(req.body)
   User.findOne({
       email: req.body.email
   }, function(err, user) {
       if (err) throw err
       if (!user) {
-          res.jsonp({
+          res.json({
               success: false,
-              message: "That email was not found! Please register"
+              message: "That email was not found in our database"
           })
       }else {
           user.comparePassword(req.body.password, function(err, isMatch){
               if(isMatch && !err) {
-                  var token = jwt.sign(user.toObject(), authCfg.secret, {
-                      expiresIn: 10000 /// seconds
-                  });
-                  res.jsonp({
-                      success: true,
-                      token: "JWT "+ token,
-                      user: user
-                  })
+                  req.session.authUser = { user }
+                  res.json({ user: user })
               } else {
-                  res.jsonp({
+                  res.json({
                       success: false,
                       message: "Auth failed, Passwords did not match"
                   })
@@ -110,6 +109,12 @@ app.post("/api/login", function(req, res, next){
       }
   })
 })
+
+app.post('/api/logout', function (req, res) {
+  delete req.session.authUser
+  res.json({ ok: true })
+})
+
 
 ////////////////////////////////////////////////
 
@@ -224,10 +229,12 @@ app.post("/api/users/:username/avatar", upload.array('images', 1), (req, res, ne
             console.log(err)
         } else {
             foundUser.avatar = filenames
-            foundUser.save();
-            res.jsonp({
-                user: foundUser
-            })
+            foundUser.save((err, saved) => {
+                req.session.authUser.user = saved
+                res.json({
+                    saved
+                })
+            });   
         }
     })
 })

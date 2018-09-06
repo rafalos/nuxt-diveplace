@@ -42,7 +42,7 @@ export default {
     },
   computed: {
     fetchUser() {
-      return this.$store.state.auth.user
+      return this.$store.state.authUser
     }
   }
 }

@@ -61,7 +61,7 @@ import Dropzone from 'nuxt-dropzone'
     },
     computed: {
       fetchUser() {
-        return this.$store.state.auth.user
+        return this.$store.state.authUser
       }
     },
     mounted() {
@@ -80,7 +80,7 @@ import Dropzone from 'nuxt-dropzone'
         formData.append('images', file);
         axios.post(`api/users/${this.$route.params.name}/avatar`, formData)
         .then((response) => {
-          this.$store.dispatch('updateUser', response.data)
+          this.$store.dispatch("UpdateUserData", response.data.saved)
         })
       }
     }
