@@ -1,4 +1,3 @@
-
 const express = require('express')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
@@ -10,7 +9,6 @@ const Diveplace  = require("./models/Diveplace")
 const Comment = require("./models/Comment")
 const User = require('./models/user')
 const Report = require('./models/Report')
-const authCfg = require('./config/config.js')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require("multer")
@@ -84,7 +82,6 @@ app.post("/api/register", function(req, res, next) {
 })
 
 app.post("/api/login", function(req, res, next){
-  console.log(req.body)
   User.findOne({
       email: req.body.email
   }, function(err, user) {
@@ -245,7 +242,7 @@ app.post("/api/diveplaces/:id/comment", function(req, res, next){
     var d = new Date()
     var date = d.toLocaleDateString();
     let comment = {
-        author: req.body.user.username,
+        author: req.body.user,
         text: req.body.message,
         date: date
     }
@@ -258,10 +255,14 @@ app.post("/api/diveplaces/:id/comment", function(req, res, next){
                     console.log(err)
                 } else {
                     foundDiveplace.comments.push(comment)
-                    foundDiveplace.save()
-                    res.jsonp({
-                        comments: foundDiveplace.comments,
-                        message: "Comment succesfully created"
+                    foundDiveplace.save((err, saved) => {
+                        if(err){
+                            console.log(err)
+                        } else {
+                            res.json({
+                                saved
+                            })
+                        }
                     })
                 }
             })

@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 0;">
     <div class="comment-section">
-      <div id="input-container" v-if="$store.state.auth !== null">
+      <div id="input-container" v-if="fetchUser !== null">
         <textarea v-model="comment" id="commentInput" cols="40" rows ="1" name="comment[text]" placeholder="Enter your comment here" @keydown.enter="postComment($event)"></textarea>
         <button class="stdbutton" @click="postComment">Add</button>
       </div>
@@ -39,20 +39,15 @@ import axios from 'axios'
     },
     methods: {
       postComment(e) {
-        console.log(this.diveplaceID)
         e.preventDefault();
         return axios.post('api/diveplaces/' + this.diveplaceID + '/comment', {
           message: this.comment,
-          user: this.fetchUser
+          user: this.fetchUser.username
         })
         .then((response) => {
-          console.log("emited")
         this.comment=''
-        this.commentsRaw = response.data.comments
-        this.$emit("commentAdded", response.data.comments)
-        return {
-          message: response.data.message
-        }
+        this.commentsRaw = response.data.saved.comments
+        this.$emit("commentAdded", response.data.saved)
       })
       .catch(function(error){
         console.log(error)

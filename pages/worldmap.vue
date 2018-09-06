@@ -34,7 +34,6 @@ export default {
     asyncData() {
       return axios.get('api/diveplaces')
       .then((response) => {
-        console.log(response)
         let tab=[]
         response.data.foundDiveplace.forEach((diveplace)=>{
           tab.push({

@@ -19,7 +19,6 @@ const createStore = () => {
         axios.post('/api/logout')
         .then((response) => {
           commit('SET_USER', null)
-          Router.push('/diveplaces');
         })
       },
       Authenticate({commit}, data) {

@@ -206,11 +206,9 @@ import Comments from '@/components/diveplaces/show/Comments'
         this.mapOpen = true
         this.descOpen = false
       },
-      updateSingleData() {
-      axios.get(`api/diveplaces/${this.$route.params.id}`)
-      .then((response) => {
-        this.diveplace = response.data.foundDiveplace
-      })
+      updateSingleData(data) {
+        console.log(data)
+        this.descDiveplace = data
       },
       updateData(name, depth, sight) {
         this.loader = 1

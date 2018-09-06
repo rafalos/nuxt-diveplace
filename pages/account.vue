@@ -110,9 +110,8 @@ import Cookie from 'js-cookie'
     border: 2px solid #3B5998;
     width: 70%;
     display: block;
-    margin-right: auto;
-    margin-left: auto;
-    font-size: 15px;
+    margin: 15px auto 15px auto;
+    font-size: 17px;
   }
 
   .in::placeholder {
@@ -126,24 +125,29 @@ import Cookie from 'js-cookie'
     width: 50%;
     margin: 0 auto;
   }
-  
+  .loginNavBtn:focus { outline: none; }
+
   .logBtn {
     background: #3B5998;
     width: 50%;
-    border-radius: 25px;
     height: 50px;
     line-height: 15px;
     margin: 5px 0px 5px 0px;
   }
+
+  .logBtn:hover {
+    color: white;
+    background: rgb(50, 82, 151)
+  }
+
   .loginNavBtn {
-    border-right: none;
-    border-radius: 0;
     width: 50%;
     margin: 0;
     background: #3B5998;
     padding: 10px;
     color: white;
     cursor: pointer;
+    border: none;
   }
   .loginNavBtnActive {
     background: white;
