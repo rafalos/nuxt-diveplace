@@ -29,7 +29,7 @@ app.use(session({
   secret: 'super-secret-key',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 3600000 }
 }))
 
 cloudinary.config({

@@ -30,6 +30,11 @@ const createStore = () => {
           commit('SET_USER', req.session.authUser.user)
         }
       }
+    },
+    getters: {
+      userData(state){
+        return state.authUser
+      }
     }
   })
 }

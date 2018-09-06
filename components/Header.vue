@@ -35,7 +35,7 @@
     },
     computed: {
       fetchUser() {
-        return this.$store.state.authUser
+        return this.$store.getters.userData
       }
     }
   }

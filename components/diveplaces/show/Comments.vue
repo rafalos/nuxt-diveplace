@@ -34,7 +34,7 @@ import axios from 'axios'
     },
     computed: {
       fetchUser() {
-        return this.$store.state.auth.user
+        return this.$store.getters.userData
       }
     },
     methods: {

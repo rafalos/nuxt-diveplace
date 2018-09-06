@@ -22,7 +22,7 @@
       <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.17); height: 800px; color: white; border-radius: 25px; padding: 10px;">
         <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i><i class="float-right fas fa-exclamation-circle" @click="report(descDiveplace._id)"></i>
         <h1 class="text-center">{{descDiveplace.name}}</h1>
-        <h2 v-if="$store.state.auth !== null" class="text-center"><i class="fas fa-heart" @click="like(descDiveplace._id)"></i><span>{{descDiveplace.liked.length}}</span> <i class="fas fa-map-marker" @click="wasThere(descDiveplace._id)"></i><span>{{descDiveplace.visited.length}}</span></h2>
+        <h2 v-if="fetchUser !== null" class="text-center"><i class="fas fa-heart" @click="like(descDiveplace._id)"></i><span>{{descDiveplace.liked.length}}</span> <i class="fas fa-map-marker" @click="wasThere(descDiveplace._id)"></i><span>{{descDiveplace.visited.length}}</span></h2>
       <button class="whiteButton descButton" @click="descMode=1" :class="{'descButtonActive':descMode==1}" style="border-radius: 25px 0px 0px 25px">Description</button>
       <button class="whiteButton descButton" @click="descMode=2" :class="{'descButtonActive':descMode==2}" >Gallery ({{descDiveplace.image.length}}) </button>
       <button class="whiteButton descButton" @click="descMode=3" :class="{'descButtonActive':descMode==3}" style="border-right: 2px solid white; border-radius: 0px 25px 25px 0px">Comments ({{descDiveplace.comments.length}}) </button>
@@ -113,6 +113,11 @@ import Comments from '@/components/diveplaces/show/Comments'
       }
       }
     },
+    computed: {
+      fetchUser() {
+        return this.$store.getters.userData
+      }
+    },
     asyncData() {
       return axios.get('api/diveplaces')
       .then((response) => {
@@ -135,7 +140,7 @@ import Comments from '@/components/diveplaces/show/Comments'
     },
     methods: {
       like(diveplaceID){
-        let username = this.$store.state.auth.user.username
+        let username = this.fetchUser.username
         axios.post(`api/diveplaces/${diveplaceID}/like`, {
           username: username
         })
@@ -151,7 +156,7 @@ import Comments from '@/components/diveplaces/show/Comments'
         })
       },
       wasThere(diveplaceID) {
-        let username = this.$store.state.auth.user.username
+        let username = this.fetchUser.username
         axios.post(`api/diveplaces/${diveplaceID}/visited`, {
           username: username
         })
