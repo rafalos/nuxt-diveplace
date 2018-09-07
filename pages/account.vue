@@ -12,7 +12,7 @@
         <div class="col-lg-12" style="padding: 50px;" v-if="mode==1">
           <h1 class="text-center">Log in</h1>
           <input type="text" class="input-line in"  placeholder="Email adress" required v-model="loginData.email">
-          <input type="password" class="input-line in"  placeholder="Password" required v-model="loginData.password">
+          <input type="password" class="input-line in"  placeholder="Password" required v-model="loginData.password" @keydown.enter="login">
           <button class="whiteButton logBtn" @click="login" @keydown.enter="login">Log In</button>
           <h5 style="font-style: italic">By signing up u agree to our Terms & conditions</h5>
         </div>

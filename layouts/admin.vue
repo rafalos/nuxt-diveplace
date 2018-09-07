@@ -77,10 +77,13 @@ html
     position: fixed;
     top: 0;
     left: 0;
-    background-image: url(http://www.divingkarpathos.gr/wp-content/uploads/2013/05/bg23.jpg);
+    background-image: url('https://image.ibb.co/kjAucp/pexels_photo_137612.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
     width: 100%;
     height: 100%;
-    opacity : 0.4;
     z-index: -1;
 }
 

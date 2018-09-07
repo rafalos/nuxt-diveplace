@@ -383,11 +383,18 @@ app.post("/api/admin/diveplaces/delete", (req, res, next) => {
 })
 
 app.post("/api/diveplaces/:id/report", (req, res, next) => {
-   Report.create(req.body, (err, createdReport) => {
+    let report = {
+        diveplace: req.params.id,
+        author: req.body.author,
+        date: new Date(),
+        reason: req.body.reason,
+        description: req.body.description
+    }
+   Report.create(report, (err, createdReport) => {
        if(err) {
            console.log(err)
        } else {
-           res.jsonp({
+           res.json({
                message: "Report submitted"
            })
        }
@@ -395,11 +402,11 @@ app.post("/api/diveplaces/:id/report", (req, res, next) => {
 })
 
 app.get("/api/admin/reports", (req,res, next) => {
-    Report.find({}, (err, foundReports) => {
+    Report.find({}).populate('diveplace').exec((err, foundReports) => {
         if(err) {
             console.log(err)
         } else {
-            res.jsonp({
+            res.json({
                 foundReports
             })
         }

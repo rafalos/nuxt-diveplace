@@ -19,8 +19,21 @@
         <Listitem class="listItem" v-else v-for="(diveplace, index) in diveplaces" @mouseover.native="centerMap(diveplace.lat, diveplace.lng, index)" @mouseleave.native="clearAnimation(diveplace.lat, diveplace.lng, index)" :key="diveplace._id" :diveplace="diveplace" @click.native="toggleDescription(diveplace._id)"/>
       </div>  
       <div class="col-lg-9">
+        <modal name="report" v-if="this.fetchUser !== null">
+        <div style="padding: 50px;">
+        <h3>Report </h3>
+        <input type="text" :value="fetchUser.email" readonly style="display: block;">
+        <select type="text" style="display: block;" v-model="reportData.reason">
+          <option>Wrong data</option>
+          <option>Offensive language</option>
+          <option>Non exisiting place</option>
+        </select>
+        <textarea type="text" style="display: block;" v-model="reportData.description"></textarea>
+            <button class="stdbutton" @click="report(descDiveplace._id)">Submit</button>
+            </div>
+        </modal>
       <div class="desc" v-if="descOpen" style="background:rgba(255,255,255, 0.17); height: 800px; color: white; border-radius: 25px; padding: 10px;">
-        <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i><i class="float-right fas fa-exclamation-circle" @click="report(descDiveplace._id)"></i>
+        <i class="fas fa-arrow-left" style="cursor: pointer;" @click="closeDescription"></i><i @click="$modal.show('report')" v-if="fetchUser !== null" class="float-right fas fa-exclamation-circle" v-b-modal.myModal></i>
         <h1 class="text-center">{{descDiveplace.name}}</h1>
         <h2 v-if="fetchUser !== null" class="text-center"><i class="fas fa-heart" @click="like(descDiveplace._id)"></i><span>{{descDiveplace.liked.length}}</span> <i class="fas fa-map-marker" @click="wasThere(descDiveplace._id)"></i><span>{{descDiveplace.visited.length}}</span></h2>
       <button class="whiteButton descButton" @click="descMode=1" :class="{'descButtonActive':descMode==1}" style="border-radius: 25px 0px 0px 25px">Description</button>
@@ -81,6 +94,11 @@ import Comments from '@/components/diveplaces/show/Comments'
   export default {
     data() {
       return {
+        reportData: {
+          author: '',
+          reason: '',
+          description: ''
+        },
         descMode: 2,
         descOpen: false,
         descDiveplace: null,
@@ -172,7 +190,13 @@ import Comments from '@/components/diveplaces/show/Comments'
         })
       },
       report(diveplaceID){
-        console.log(diveplaceID)
+        axios.post(`api/diveplaces/${diveplaceID}/report`, {
+          author: this.$store.getters.userData.email,
+          reason: this.reportData.reason,
+          description: this.reportData.description
+        }).then((response) => {
+          console.log(response.data.message)
+        })
       },
       centerMap(lat, lng, index) {
         if(this.mapOpen){
