@@ -1,4 +1,3 @@
-
 const express = require('express')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
@@ -8,15 +7,13 @@ const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const Diveplace  = require("./models/Diveplace")
 const Comment = require("./models/Comment")
-const jwt = require('jsonwebtoken')
-const passport = require('passport')
 const User = require('./models/user')
 const Report = require('./models/Report')
-const authCfg = require('./config/config.js')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require("multer")
 const cors = require('cors')
+const session = require('express-session')
 
 app.use(cors({
     'allowedHeaders': ['sessionId', 'Content-Type'],
@@ -26,6 +23,12 @@ app.use(cors({
     'preflightContinue': false
   }));
 
+app.use(session({
+  secret: 'super-secret-key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 3600000 }
+}))
 
 cloudinary.config({
     cloud_name: 'hoahkzu0h',
@@ -46,15 +49,13 @@ cloudinary.config({
 
 app.set('port', port)
 mongoose.connect('mongodb://rafalos:rafal1@ds161245.mlab.com:61245/diveplaces');
-app.use(passport.initialize())
-require("./config/passport.js")(passport)
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 //auth//
 app.post("/api/register", function(req, res, next) {
   if(!req.body.email || !req.body.password) {
-      res.jsonp({
+      res.json({
           success: false,
           message: "Please enter email and password"
       })
@@ -64,16 +65,17 @@ app.post("/api/register", function(req, res, next) {
           password: req.body.password,
           username: req.body.username
       });
-      newUser.save(function(err){
+      newUser.save(function(err, savedUser){
           if(err) {
-              return res.jsonp({
+              return res.json({
                   success: false,
                   message: "Email already exist! Try another one"
               })
           }
-          res.jsonp({
+          res.json({
               success: true,
-              message: "Successfully created new user! Redirecting in 3 seconds"
+              message: "Successfully created new user! Redirecting in 3 seconds",
+              user: savedUser
           })
       })
   }
@@ -85,23 +87,17 @@ app.post("/api/login", function(req, res, next){
   }, function(err, user) {
       if (err) throw err
       if (!user) {
-          res.jsonp({
+          res.json({
               success: false,
-              message: "That email was not found! Please register"
+              message: "That email was not found in our database"
           })
       }else {
           user.comparePassword(req.body.password, function(err, isMatch){
               if(isMatch && !err) {
-                  var token = jwt.sign(user.toObject(), authCfg.secret, {
-                      expiresIn: 10000 /// seconds
-                  });
-                  res.jsonp({
-                      success: true,
-                      token: "JWT "+ token,
-                      user: user
-                  })
+                  req.session.authUser = { user }
+                  res.json({ user: user })
               } else {
-                  res.jsonp({
+                  res.json({
                       success: false,
                       message: "Auth failed, Passwords did not match"
                   })
@@ -110,6 +106,12 @@ app.post("/api/login", function(req, res, next){
       }
   })
 })
+
+app.post('/api/logout', function (req, res) {
+  delete req.session.authUser
+  res.json({ ok: true })
+})
+
 
 ////////////////////////////////////////////////
 
@@ -193,9 +195,23 @@ app.get("/api/users/:username", (req,res, next) => {
         if(err){
             console.log(err);
         }else{
-            res.jsonp({
-                foundUser
-            })
+            Diveplace.find({liked: {"$in": [req.params.username]}}, function(err, foundLiked){
+                if(err) {
+                    console.log(err)}
+                     else {
+                         Diveplace.find({visited: {"$in": [req.params.username]}}, function(err, foundVisited){
+                             if(err) {
+                                 console.log(err)
+                             } else {
+                                res.json({
+                                    liked: foundLiked,
+                                    visited: foundVisited,
+                                    user: foundUser
+                                })
+                             }
+                         })
+                    }
+                })
         }
     })
 })
@@ -210,10 +226,12 @@ app.post("/api/users/:username/avatar", upload.array('images', 1), (req, res, ne
             console.log(err)
         } else {
             foundUser.avatar = filenames
-            foundUser.save();
-            res.jsonp({
-                user: foundUser
-            })
+            foundUser.save((err, saved) => {
+                req.session.authUser.user = saved
+                res.json({
+                    saved
+                })
+            });   
         }
     })
 })
@@ -224,7 +242,7 @@ app.post("/api/diveplaces/:id/comment", function(req, res, next){
     var d = new Date()
     var date = d.toLocaleDateString();
     let comment = {
-        author: req.body.user.username,
+        author: req.body.user,
         text: req.body.message,
         date: date
     }
@@ -237,10 +255,14 @@ app.post("/api/diveplaces/:id/comment", function(req, res, next){
                     console.log(err)
                 } else {
                     foundDiveplace.comments.push(comment)
-                    foundDiveplace.save()
-                    res.jsonp({
-                        comments: foundDiveplace.comments,
-                        message: "Comment succesfully created"
+                    foundDiveplace.save((err, saved) => {
+                        if(err){
+                            console.log(err)
+                        } else {
+                            res.json({
+                                saved
+                            })
+                        }
                     })
                 }
             })
@@ -248,7 +270,52 @@ app.post("/api/diveplaces/:id/comment", function(req, res, next){
     })
 })
 
+/////////////////////////////////////
+app.post("/api/diveplaces/:id/like", function(req, res, next){
+    Diveplace.findById(req.params.id, (err, foundDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            if(foundDiveplace.liked.includes(req.body.username)){
+                res.json({
+                    success: false,
+                    message: "You already like it"
+                })
+            } else {
+                foundDiveplace.liked.push(req.body.username)
+                foundDiveplace.save()
+                res.json({
+                    success: true,
+                    diveplace: foundDiveplace
+                })
+            }
+            
+        }
+    })
+})
 
+app.post("/api/diveplaces/:id/visited", function(req, res, next){
+    Diveplace.findById(req.params.id, (err, foundDiveplace) => {
+        if(err) {
+            console.log(err)
+        } else {
+            if(foundDiveplace.visited.includes(req.body.username)){
+                res.json({
+                    success: false,
+                    message: "You already marked this place as visited"
+                })
+            } else {
+                foundDiveplace.visited.push(req.body.username)
+                foundDiveplace.save()
+                res.json({
+                    success: true,
+                    diveplace: foundDiveplace
+                })
+            }
+            
+        }
+    })
+})
 
 
 
@@ -316,11 +383,18 @@ app.post("/api/admin/diveplaces/delete", (req, res, next) => {
 })
 
 app.post("/api/diveplaces/:id/report", (req, res, next) => {
-   Report.create(req.body, (err, createdReport) => {
+    let report = {
+        diveplace: req.params.id,
+        author: req.body.author,
+        date: new Date(),
+        reason: req.body.reason,
+        description: req.body.description
+    }
+   Report.create(report, (err, createdReport) => {
        if(err) {
            console.log(err)
        } else {
-           res.jsonp({
+           res.json({
                message: "Report submitted"
            })
        }
@@ -328,11 +402,11 @@ app.post("/api/diveplaces/:id/report", (req, res, next) => {
 })
 
 app.get("/api/admin/reports", (req,res, next) => {
-    Report.find({}, (err, foundReports) => {
+    Report.find({}).populate('diveplace').exec((err, foundReports) => {
         if(err) {
             console.log(err)
         } else {
-            res.jsonp({
+            res.json({
                 foundReports
             })
         }

@@ -1,19 +1,13 @@
 <template>
-  <nuxt-link :to="'/diveplaces/' + diveplace._id">
 		<div class="row diveplace-column">
-      <div class="image col-md-4 col-xs-6 content-column" style="padding:0">
-        <img width="300" height="240" class="img img-responsive" :src="'http://res.cloudinary.com/hoahkzu0h/' + diveplace.image[0]" onerror="this.src='/img/nophoto.png';" >
+      <div class="image col-md-12 content-column" style="padding:0">
+        <img class="img img-responsive" :src="'http://res.cloudinary.com/hoahkzu0h/' + diveplace.image[0]" onerror="this.src='/img/nophoto.png';" >
+        <div class="desc">
+        <h5>{{diveplace.name}}</h5>
+        </div>
       </div>
-		  <div class="col-md-8 col-xs-6 content-column">
-			  <h3 class="text-center head-text">{{diveplace.name}}</h3>
-			    <div id="content-container">
-            <h5>Country: {{diveplace.country}} </h5>
-			      <h5>Maximum depth: {{diveplace.depth}} m.</h5>
-            <h5>Maximum sight: {{diveplace.sight}} m.</h5>
-		      </div>                   
-      </div>	
+      	
 		</div>
-	</nuxt-link>
 </template>
 
 <script>
@@ -23,31 +17,47 @@
 </script>
 
 <style scoped>
+.img {
+  position: relative;
+}
+.desc {
+  float: left;
+   position: absolute;
+   width: 100%;
+   left: 0px;
+   top: 220px;
+   z-index: 1000;
+   background: rgba(255, 255, 255, 0.7);
+   padding: 5px;
+   color: black;
+   font-weight: bold;
+}
+
 
 .diveplace-box {
-    border: 1px solid black;
     background: white;
   }
 
 .diveplace-column {
 	color: black;
-  background:rgba(255,255,255, 0.8);
+  background: white;
+  height: 250px;
   margin: 0px 0px 10px 0px;
   -webkit-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
   -moz-box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
   box-shadow: 7px 7px 28px -6px rgba(0,0,0,0.79);
   transition: 0.2s;
+  position: relative;
   }
 
 .diveplace-column:hover {
-  background: #e9f3f5;
+  opacity: 0.9;
   }
 
 .image {
-   position: relative; 
-   height: 165px;
-   width: 200px;
+   width: 100%;
    overflow: hidden;
+   height: 100%;
 }
 
 </style>

@@ -1,19 +1,20 @@
 <template>
   <div>
-    <b-navbar class="fixed-top" toggleable="md" style="border-bottom: 2px solid #143D61; background:rgba(255,255,255, 0.4);">
-      <nuxt-link to="/"><img src="@/static/logo.png" class="img img-responsive" id="logo" style="height: 60%; width: 60%;"></nuxt-link>
+    <b-navbar toggleable="md" style="background:rgba(255,255,255, 0.2);">
+      <nuxt-link to="/diveplaces"><button class="whiteButton navBtn"><i class="fas fa-list-ul"></i> Diveplaces</button></nuxt-link>
+      <nuxt-link to="/worldmap"><button class="whiteButton navBtn"><i class="fas fa-globe"></i> Worldmap</button></nuxt-link>
+      <nuxt-link v-if="fetchUser !== null" to="/diveplaces/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New diveplace</button></nuxt-link>
+      <nuxt-link v-if="fetchUser !== null" to="/logbook/new"><button class="whiteButton navBtn"><i class="fas fa-plus-circle"></i> New logbook entry</button></nuxt-link>
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
     <b-collapse is-nav id="nav_collapse">
     <b-navbar-nav class="ml-auto">
-      <b-nav-item-dropdown right text="Account" v-if="this.$store.state.auth == null">
-        <nuxt-link to="/login"><h4>Login</h4></nuxt-link>
-        <nuxt-link to="/register"><h4>Register</h4></nuxt-link>
-      </b-nav-item-dropdown>
+    <nuxt-link to="/account" v-if="fetchUser == null"><button class="whiteButton navBtn"><i class="fas fa-user-circle"></i> Account</button></nuxt-link>
       <div v-else>
-      <img class="img img-responsive avatar float-right" :src="`http://res.cloudinary.com/hoahkzu0h/${fetchUser.avatar[0]}`"> 
+        <img class="img img-responsive avatar float-right" :src="`http://res.cloudinary.com/hoahkzu0h/${fetchUser.avatar[0]}`"> 
         <b-nav-item-dropdown right :text="fetchUser.username" style="text: center; display: inline-block;">
         <nuxt-link :to="'/users/' + fetchUser.username"><h4>My profile</h4></nuxt-link>
         <nuxt-link :to="'/users/' + fetchUser.username +'/edit'"><h4>Settings</h4></nuxt-link>
+        <nuxt-link to="/logbook"><h4>Logbook</h4></nuxt-link>
         <nuxt-link to='/admin' v-if="fetchUser.admin"><h4>Admin</h4></nuxt-link>
         <h4 @click="logout" style="cursor: pointer">Logout</h4>
       </b-nav-item-dropdown>
@@ -28,12 +29,13 @@
   export default {
     methods: {
       logout() {
-        this.$store.dispatch("logout")
+        this.$store.dispatch("Logout")
+        this.$router.push('/diveplaces')
       }
     },
     computed: {
       fetchUser() {
-        return this.$store.state.auth.user
+        return this.$store.getters.userData
       }
     }
   }
@@ -50,19 +52,25 @@
 }
 
 .navbar {
-  padding: 3px;
+  padding: 0;
+  height: 50px;
 }
 
 .navbar-nav li {
   font-size: 20px;
-  font-weight: bold;
   }
 
 .avatar {
   width: 50px;
   height: 50px;
-  border-radius: 100%;
   display: block;
+}
+
+.navBtn {
+  margin: 0;
+  border: none;
+  border-radius: 0px;
+  font-weight: normal;
 }
 
 </style>

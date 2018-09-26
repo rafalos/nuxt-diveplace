@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" :style="{width: progress +'%'}" style="background: #143D61;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+  <div class="container-fluid">
+    <div class="progress" style="border: 1px solid white; height: 30px;">
+      <div class="progress-bar" role="progressbar" :style="{width: progress +'%'}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
         <span class="text-center font-weight-bold" style="color-white">{{progress}}</span>
       </div>
     </div>
@@ -20,7 +20,7 @@
         :draggable="false"
         :position="marker"/>
       </GmapMap>
-      <button @click="stepUp" class="stdbutton">Next</button>
+      <button @click="stepUp" class="whiteButton">Next</button>
       {{marker.lat}} | {{marker.lng}} | {{diveplace.country}}
     </div>
 
@@ -187,3 +187,22 @@
     }
   }
 </script>
+
+
+<style>
+  .whiteContainer {
+    background: none;
+    color: white;
+    border-radius: 0;
+  }
+  .progress-bar {
+    background: rgba(44,49,248,1);
+background: -moz-linear-gradient(45deg, rgba(44,49,248,1) 0%, rgba(44,49,248,1) 1%, rgba(44,49,248,1) 12%, rgba(44,49,248,1) 22%, rgba(169,134,247,1) 95%, rgba(169,134,247,1) 100%);
+background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(44,49,248,1)), color-stop(1%, rgba(44,49,248,1)), color-stop(12%, rgba(44,49,248,1)), color-stop(22%, rgba(44,49,248,1)), color-stop(95%, rgba(169,134,247,1)), color-stop(100%, rgba(169,134,247,1)));
+background: -webkit-linear-gradient(45deg, rgba(44,49,248,1) 0%, rgba(44,49,248,1) 1%, rgba(44,49,248,1) 12%, rgba(44,49,248,1) 22%, rgba(169,134,247,1) 95%, rgba(169,134,247,1) 100%);
+background: -o-linear-gradient(45deg, rgba(44,49,248,1) 0%, rgba(44,49,248,1) 1%, rgba(44,49,248,1) 12%, rgba(44,49,248,1) 22%, rgba(169,134,247,1) 95%, rgba(169,134,247,1) 100%);
+background: -ms-linear-gradient(45deg, rgba(44,49,248,1) 0%, rgba(44,49,248,1) 1%, rgba(44,49,248,1) 12%, rgba(44,49,248,1) 22%, rgba(169,134,247,1) 95%, rgba(169,134,247,1) 100%);
+background: linear-gradient(45deg, rgba(44,49,248,1) 0%, rgba(44,49,248,1) 1%, rgba(44,49,248,1) 12%, rgba(44,49,248,1) 22%, rgba(169,134,247,1) 95%, rgba(169,134,247,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c31f8', endColorstr='#a986f7', GradientType=1 );
+  }
+</style>
