@@ -1,4 +1,4 @@
-www.diveplace.pl
+http://next-diveplace.herokuapp.com/
 
 
 # Diveplace
